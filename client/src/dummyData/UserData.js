@@ -2,7 +2,7 @@
 const users = {
     name: "juswa",
     isAdmin: true,
-    isLoggedIn: true,
+    isLoggedIn: false,
 }
 
 export default users

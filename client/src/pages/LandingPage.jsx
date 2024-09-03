@@ -8,14 +8,14 @@ export default function LandingPage() {
     <section className="h-screen font-main  relative overflow-hidden">
       <div className="relative z-2 h-screen overflow-y-auto max-w-[1280px] mx-auto p-4">
         <div className="flex items-center relative flex-col gap-20 pt-40 lg:pt-52 lg:gap-4  lg:flex-row justify-between">
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-3">
             <div className="flex md:pl-10 lg:pl-0">
               <h2 className="bg-primary py-1 px-3 rounded-[5px]  tracking-wider text-card font-main uppercase">
                 CLOTHING LINE
               </h2>
             </div>
             <div className="relative z-10  md:w-[700px] lg:w-[690px]">
-              <h1 className="font-main text-2xl mx-auto leading-normal md:leading-tight lg:leading-tight  md:text-4xl  lg:text-5xl md:text-center lg:text-start ">
+              <h1 className="font-main text-2xl mx-auto leading-tight md:leading-tight lg:leading-tight  md:text-4xl  lg:text-5xl md:text-center lg:text-start ">
                 Your <span className="text-indigo-700">Style</span>, Redefined:
                 Discover Timeless{" "}
                 <span className="text-indigo-700">Elegance</span> and{" "}
@@ -39,17 +39,17 @@ export default function LandingPage() {
             </Link>
           </div>
 
-          <div className=" w-full overflow-hidden  md:text-center  flex flex-col gap-8 ">
-            <div className="flex flex-col gap-2 items-center">
-              <h1 className="md:text-lg uppercase text-center">
-                Check these best products in their category
+          <div className=" w-full overflow-hidden  md:text-center  flex flex-col gap-6 ">
+            <div className="flex flex-col gap-3 items-center">
+              <h1 className="text-lg md:text-xl uppercase text-center">
+                Check these best products 
               </h1>
 
-              <div className="flex justify-center gap-4">
-                <p className="text-sm">JACKET</p>
-                <p className="text-sm">SHORTS</p>
-                <p className="text-sm">SHIRTS</p>
-                <p className="text-sm">PANTS</p>
+              <div className="flex justify-center gap-3">
+                <p className="text-xs md:text-sm">JACKET</p>
+                <p className="text-xs md:text-sm">SHORTS</p>
+                <p className="text-xs md:text-sm">SHIRTS</p>
+                <p className="text-xs md:text-sm">PANTS</p>
               </div>
             </div>
 

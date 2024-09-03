@@ -56,10 +56,6 @@ export default function SignUp() {
       </div>
     <ShoesBg botPosition={"5px"} rotatePosition={"45deg"}/>
     <ShoesBg  topPosition={"60px"} rightPosition={"30px"} rotatePosition={"-20deg"}/>
-
-
-    
-
     </section>
   )
 }
