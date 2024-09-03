@@ -1,7 +1,29 @@
 import express from 'express'
+import { configDotenv } from 'dotenv';
+import mongoose from 'mongoose';
+// ROUTES
 
 const app = express();
+const PORT = process.env.PORT || 5000
 
-app.listen(5000, () => {
-    console.log("Server is running on port 5000")
+configDotenv()
+// to parse the request json to postman
+app.use(express.json())
+
+
+
+const connect = () => {
+    mongoose
+    .connect(process.env.MONGO)
+    .then(() => {
+        console.log("Connected to the MongoDB")
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+}
+
+app.listen(PORT, () => {
+    connect()
+    console.log(`Server running on ${PORT}`)
 })
