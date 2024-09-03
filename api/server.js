@@ -6,7 +6,6 @@ import mongoose from 'mongoose';
 import authRoute from '../api/routes/auth.route.js'
 
 
-
 const app = express();
 const PORT = process.env.PORT || 5000
 configDotenv()
@@ -14,9 +13,8 @@ configDotenv()
 app.use(express.json())
 
 
-
 // MAKING ROUTERS
-app.use(`api/auth`, authRoute)
+app.use(`/api/auth`, authRoute)
 
 const connect = () => {
     mongoose
