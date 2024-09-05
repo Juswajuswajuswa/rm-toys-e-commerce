@@ -1,5 +1,4 @@
 export const handleError = (error, req, res, next) => {
-    console.log("error came from middleware handleerror")
     const message = process.env.NODE_ENV === 'development' ? error.stack : "Internal Server Error";
     res.status(error.status || 500).json({
         success: false,
