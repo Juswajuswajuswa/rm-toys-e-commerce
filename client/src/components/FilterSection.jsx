@@ -1,12 +1,7 @@
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { MdOutlineKeyboardArrowUp } from "react-icons/md";
 
-export default function FilterSection({
-  title,
-  children,
-  isVisible,
-  onToggle,
-}) {
+export default function FilterSection({title,children,isVisible,onToggle,}) {
   return (
     <div className={` flex-col gap-2 border-b-gray-400 border pb-5`}>
       <div className="flex items-start justify-between">

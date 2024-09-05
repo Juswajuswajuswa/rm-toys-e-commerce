@@ -13,6 +13,9 @@ export default function SignIn() {
           </div>
           <span className="border bg-[#313031] opacity-80 text-white border-primary py-1 rounded-[5px] px-3">SIGN IN</span>
         </div>
+
+
+        {/* FORM */}
         <form className="relative border flex gap-2 bg-secondary flex-col border-black p-4 rounded-[5px] pt-[50px] pb-[80px] shadow-lg">
          
           <div className="flex justify-between flex-col">
@@ -36,18 +39,17 @@ export default function SignIn() {
           </div>
         </form>
 
+        
+
         <div className="mt-4 flex justify-between">
           <div className="relative flex-1">
           <ArrowLine arrowWidth={"90%"} bottomNeg={"50%"} arrowLeft={"0px"}/>
           </div>
-          <div className="text-sm ">
-            no account yet? <Link to={`/sign-up`} className="text-indigo-500 hover:underline uppercase text-[17px]"> sign up here!</Link>
+          <div className="text-sm uppercase flex gap-2">
+            no account yet? {" "} <Link to={`/sign-up`} className="text-indigo-500 hover:underline uppercase text-[17px]"> sign up here!</Link>
           </div>
         </div>
       </div>
-
-
-    
 
       <ShoesBg botPosition={"30px"} rotatePosition={"45deg"}/>
       <ShoesBg  topPosition={"60px"} rightPosition={"30px"} rotatePosition={"-20deg"}/>

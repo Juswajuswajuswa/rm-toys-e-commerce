@@ -28,10 +28,6 @@ export default function SignUp() {
             <label htmlFor="password" className="uppercase mb-2 ">Password: </label>
             <input type="password" name="password" id="password" className=" outline-none p-3 bg-transparent border-[#313031] border rounded-[5px]" />
           </div>
-          <div className="flex justify-between flex-col">
-            <label htmlFor="password2" className="uppercase mb-2 ">Confirm password: </label>
-            <input type="password" name="password2" id="password2" className=" outline-none p-3 bg-transparent border-[#313031] border rounded-[5px]" />
-          </div>
 
           <div className="flex justify-center mt-10 gap-2">
             <button className="border p-2 px-5  border-none bg-[#313031] hover:opacity-95  uppercase font-medium text-white rounded-[5px]">
@@ -49,8 +45,8 @@ export default function SignUp() {
           <div className="relative flex-1">
           <ArrowLine arrowWidth={"90%"} bottomNeg={"50%"} arrowLeft={"0px"}/>
           </div>
-          <div className="text-sm ">
-            already have an account? <Link to={`/sign-in`} className="text-indigo-500 hover:underline text-[17px] uppercase"> sign in here!</Link>
+          <div className="text-sm uppercase flex gap-2">
+            already have an account? {" "} <Link to={`/sign-in`} className="text-indigo-500 hover:underline text-[17px] uppercase"> sign in here!</Link>
           </div>
         </div>
       </div>
@@ -58,4 +54,4 @@ export default function SignUp() {
     <ShoesBg  topPosition={"60px"} rightPosition={"30px"} rotatePosition={"-20deg"}/>
     </section>
   )
-}
+} 

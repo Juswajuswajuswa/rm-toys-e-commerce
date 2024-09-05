@@ -8,12 +8,7 @@ import Settings from "./Settings/Settings";
 import WishList from "./WishList";
 import { UserContext } from "../userContext/UserContext";
 
-const navItems = [
-  { name: "Shop", path: "/shop" },
-  { name: "Popular", path: "/popular" },
-  { name: "Contacts", path: "/contacts" },
-  { name: "Reviews", path: "/reviews" },
-];
+import { navItems } from "../const/const";
 
 export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -38,7 +33,7 @@ export default function Navbar() {
               <Link to={`/sign-in`}>
                 <button
                   onClick={() => setIsExpanded(false)}
-                  className="font-main text-2xl  py-[40px]"
+                  className="font-main text-2xl pl-[10px] py-[20px]"
                 >
                   SIGN IN
                 </button>
@@ -49,7 +44,7 @@ export default function Navbar() {
           </div>
 
           {/* RENDER NAVBAR LIST ITEMS */}
-          <ul className=" p-3 font-main lg:flex  gap-7 h-screen flex flex-col  justify-start text-2xl shadow-lg">
+          <ul className=" p-3 font-main lg:flex  gap-7 h-screen flex flex-col  justify-start text-xl shadow-lg">
             {navItems.map((item) => (
               <li key={item.name}>
                 <Link to={`${item.path}`}>

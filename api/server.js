@@ -1,7 +1,10 @@
 import express from 'express'
 import { configDotenv } from 'dotenv';
-import mongoose from 'mongoose';
-
+import cookieParser from 'cookie-parser';
+// MONGODB
+import { connectDb } from './lib/db.js';
+//
+import { handleError } from './middleware/handleError.js';
 // ROUTES
 import authRoute from '../api/routes/auth.route.js'
 
@@ -11,23 +14,19 @@ const PORT = process.env.PORT || 5000
 configDotenv()
 // to parse the request json to postman
 app.use(express.json())
+app.use(cookieParser())
 
 
 // MAKING ROUTERS
 app.use(`/api/auth`, authRoute)
 
-const connect = () => {
-    mongoose
-    .connect(process.env.MONGO)
-    .then(() => {
-        console.log("Connected to the MongoDB")
-    })
-    .catch((error) => {
-        console.log(error)
-    })
-}
+
+
+// MIDDLEWARE HANDLE ERROR
+app.use(handleError)
 
 app.listen(PORT, () => {
-    connect()
+    connectDb()
     console.log(`Server running on ${PORT}`)
 })
+
