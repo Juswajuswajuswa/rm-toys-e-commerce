@@ -1,10 +1,8 @@
-import { useContext } from "react"
-import { UserContext } from "../../userContext/UserContext"
 import { Navigate } from "react-router-dom"
+import { useUserStore } from "../../stores/useUserStore"
 
 export const ProtectedAdminRoute = ({children}) => {
-    const users = useContext(UserContext)   
-    const isAdmin = users.isAdmin === true
-
-   return isAdmin ? children : <Navigate to="/" />;
+    const currentUser = useUserStore(state => state.currentUser)   
+    return currentUser.role === "admin" ? children : <Navigate to="/" />;
 }
+

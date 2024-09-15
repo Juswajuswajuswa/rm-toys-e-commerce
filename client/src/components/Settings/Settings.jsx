@@ -1,14 +1,30 @@
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { CgProfile } from "react-icons/cg";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 import { FaSignOutAlt } from "react-icons/fa";
-import { UserContext } from "../../userContext/UserContext";
+import { useUserStore } from "../../stores/useUserStore";
+import { useMutation } from "@tanstack/react-query";
+import axiosInstance from "../../lib/axios";
 
 export default function Settings() {
   const [showSetting, setShowSetting] = useState(false)
-  const users = useContext(UserContext)
+
+    const currentUser = useUserStore(state => state.currentUser)
+    const {clearUser} = useUserStore()
+
+    const navigate = useNavigate()
+
+
+    const {mutate: signOut} =  useMutation({
+      mutationFn: async () => await axiosInstance.post(`auth/signout`),
+      onSuccess: () => {
+        navigate("/sign-in")
+        clearUser()
+      }
+    })
+
 
 
   return (
@@ -19,7 +35,7 @@ export default function Settings() {
       <div className={`absolute ${showSetting ? "block" : "hidden"} left-[30px] top-[-120px] lg:top-[45px] lg:-left-[170px] w-[180px] rounded-[5px] p-3 border-black border bg-card`}>
         <ul className="flex flex-col justify-end h-full gap-2">
             {
-              users.isAdmin === true? <li className="border-b-gray-300 uppercase p-1 hover:bg-gray-300 border">
+              currentUser.role === "admin" ? <li className="border-b-gray-300 uppercase p-1 hover:bg-gray-300 border">
               <Link to={`/admin`} className=" flex justify-between items-center" onClick={() => setShowSetting(false)} >
                 dashboard
                 <TbLayoutDashboardFilled size={20} />
@@ -32,11 +48,12 @@ export default function Settings() {
                 <CgProfile size={20} />
               </Link>
             </li>
-            <li className="border-b-gray-300 uppercase p-1 hover:bg-gray-300 border">
-              <Link className=" flex justify-between items-center" onClick={() => setShowSetting(false)} >
+            <li className="border-b-gray-300  p-1 hover:bg-gray-300 border">
+              <button onClick={() => signOut()} 
+              className=" uppercase flex justify-between w-full items-center"  >
                 Sign out
                 <FaSignOutAlt size={20} />
-              </Link>
+              </button>
             </li>
         </ul>
       </div>

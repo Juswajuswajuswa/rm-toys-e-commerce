@@ -1,7 +1,7 @@
 
-export default function Buttons({buttonName, icon}) {
+export default function Buttons({buttonType, buttonName, icon}) {
   return (
-    <button type="button" className="flex relative hover:opacity-95 uppercase justify-center items-center w-full border-black p-2 rounded-[5px] bg-primary text-card" 
+    <button type={buttonType || "button"} className="flex relative hover:opacity-95 uppercase justify-center items-center w-full border-black p-2 rounded-[5px] bg-primary text-card" 
     >
     
     {buttonName}

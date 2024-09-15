@@ -6,6 +6,9 @@ export default function StarsRating({rating, setRating}) {
     //     setRating(index + 1)
     // }
 
+    // to get the average stars rating
+    // const averageRating = ratings.reduce((acc, curr) => acc + curr.rating, 0) / ratings.length || 0;
+
   return (
     <div className='flex'>
 

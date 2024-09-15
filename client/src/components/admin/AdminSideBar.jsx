@@ -17,19 +17,24 @@ const adminSideBarItems = [
     icon: <IoIosStats size={20} />,
   },
   {
+    name: "Order Status",
+    path: "/admin/addProducts",
+    icon: <TbLayoutDashboardFilled size={20} />,  
+  },
+  {
     name: "products",
     path: "/admin/products",
     icon: <FaShoppingCart size={20} />,
   },
   {
-    name: "categories",
-    path: "/admin/categories",
-    icon: <MdCategory size={20} />,
-  },
-  {
     name: "add products",
     path: "/admin/addProducts",
     icon: <TbLayoutDashboardFilled size={20} />,
+  },
+  {
+    name: "Manage Filter",
+    path: "/admin/filter",
+    icon: <MdCategory size={20} />,
   },
   // {
   //   name: "settings",

@@ -16,10 +16,16 @@ const UserModelSchema = new mongoose.Schema(
       required: [true, "Username is required"],
     },
 
+    avatar: {
+      type: String,
+     default:
+        "https://medschool.uci.edu/sites/default/files/styles/staff_faculty_photo/public/media-images/noun-person-4046839-cropped-uci-site-colors_0.jpg?h=167045e9&itok=5PT_EoCP",
+    },
+
     password: {
       type: String,
       required: [true, "Password is required"],
-      minLength: [6, "Password must be at least 6 characters long"],
+      // minLength: [6, "Password must be at least 6 characters long"],
     },
 
     role: {

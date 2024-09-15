@@ -1,10 +1,7 @@
 
+
 export default function ShippingAddressComponent() {
-
-
   return (
-    <div>
-      
-    </div>
+    <div>ShippingAddressComponent</div>
   )
 }

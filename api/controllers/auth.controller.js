@@ -6,7 +6,6 @@ import { setCookies } from "../utils/setCookies.js";
 import RefreshToken from "../models/refreshToken.model.js";
 
 import jwt from "jsonwebtoken";
-import { response } from "express";
 
 const storeRefreshToken = async (userId, refreshToken) => {
   const token = new RefreshToken({
@@ -17,20 +16,26 @@ const storeRefreshToken = async (userId, refreshToken) => {
 };
 
 // REGISTER
-export const signUp = async (req, res, next) => {
-  const { username, email, password } = req.body;
+export const signup = async (req, res, next) => {
+  const { username, email, password, confirmPassword } = req.body;
 
   const userExists = await User.findOne({ email });
   if (userExists) {
     return next(handleMakeError(400, "User already exist"));
   }
 
+  if (!username || !email || !password || !confirmPassword) return next(handleMakeError(400, "Please input required fields"))
+
+  if (password.trim() !== confirmPassword.trim()) return next(handleMakeError(400, "passwords are not equal "))
+
   try {
+
     const newUser = new User({
       email,
       username,
       password,
     });
+
     // authenticate
     const { accessToken, refreshToken } = generateTokens(newUser._id);
     await storeRefreshToken(newUser._id, refreshToken);
@@ -52,8 +57,10 @@ export const signUp = async (req, res, next) => {
   }
 };
 
-export const signIn = async (req, res, next) => {
+export const signin = async (req, res, next) => {
   const { email, password } = req.body;
+
+  if (!email || !password) return next(handleMakeError(400, "Please input required fields"))
 
   try {
     const validUser = await User.findOne({ email });
@@ -64,14 +71,11 @@ export const signIn = async (req, res, next) => {
       await storeRefreshToken(validUser._id, refreshToken);
       setCookies(res, accessToken, refreshToken);
 
-      console.log(accessToken);
-
-      res.status(200).json({
-        _id: validUser._id,
-        name: validUser.name,
-        email: validUser.email,
-        role: validUser.role,
-      });
+      // EXCLUDING THE PASSWORD WITH THIS METHOD INSTEAD OF .select("-password") is wild
+      // JOKES ON YOU I CANT USE .select("-password") in this messy code because if i put that after User.FindOne - 
+      // now i cant compare my password because it wouldnt work because there is no password to compare
+      const { password: pass, ...rest } = validUser._doc;
+      res.json(rest);
     } else {
       next(handleMakeError(400, "Invalid Credentials"));
     }
@@ -81,7 +85,7 @@ export const signIn = async (req, res, next) => {
   }
 };
 
-export const signOut = async (req, res, next) => {
+export const signout = async (req, res, next) => {
   try {
     const { refreshToken } = req.cookies;
 
@@ -121,7 +125,7 @@ export const refreshToken = async (req, res, next) => {
       token: refreshToken,
     });
     //  THE TTL IN THE SCHEMA WILL AUTOMATICALLY DELETE THE EXPIRED TOKEN ONCE THEIR DUE FILLED, SO I DONT HAVE TO USE THE OR || but to make sure
-    // im just going to use it
+    // im just going to use it anyway
     if (!storedToken || storedToken.expiresAt < new Date()) {
       return next(handleMakeError(401, "Invalid token or expired token"));
     }
@@ -136,12 +140,12 @@ export const refreshToken = async (req, res, next) => {
     const newRefreshToken = jwt.sign(
       { userId: decoded.userId },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "15d" }
+      { expiresIn: "7d" }
     );
 
     setCookies(res, newAccessToken, newRefreshToken);
 
-    // optional updating the refresh token in the database
+    // optional updating the new refresh token in the database
     await RefreshToken.updateOne(
       { userId: decoded.userId, token: refreshToken },
       { token: newRefreshToken } // 7 days

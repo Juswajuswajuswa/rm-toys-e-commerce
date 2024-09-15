@@ -1,19 +1,19 @@
 import { Link } from "react-router-dom";
 import { CiMenuFries } from "react-icons/ci";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import ArrowLine from "../reusable/ArrowLine";
 import Cart from "./Cart";
 import Profile from "./Profile";
 import Settings from "./Settings/Settings";
 import WishList from "./WishList";
-import { UserContext } from "../userContext/UserContext";
+
 
 import { navItems } from "../const/const";
+import { useUserStore } from "../stores/useUserStore";
 
 export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(false);
-
-  const users = useContext(UserContext)   
+  const currentUser = useUserStore(state => state.currentUser)
 
   
   return (
@@ -29,7 +29,7 @@ export default function Navbar() {
           } left-[-15px] top-[-15px] backdrop-blur-sm z-50`}
         >
           <div>
-            {users.isLoggedIn === false ? (
+            {!currentUser ? (
               <Link to={`/sign-in`}>
                 <button
                   onClick={() => setIsExpanded(false)}
@@ -59,7 +59,7 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {users.isLoggedIn ? (
+          {currentUser ? (
             <div className="flex-1 flex border-t-gray-400 border justify-between items-center py-2 px-1 bg-card">
               <Profile />
               <Settings />
@@ -81,15 +81,20 @@ export default function Navbar() {
                   CLOTHING LINE
                 </span>
               </Link>
-              <div className="flex gap-3 relative">
-              <div className="absolute -left-10  lg:hidden">
-                <Cart/> 
-              </div>
-              <div className="lg:hidden">
-                <WishList/>
-              </div>
-                
-              </div>
+
+              {
+               currentUser ? (
+                  <div className="flex gap-3 relative">
+                  <div className="absolute -left-10  lg:hidden">
+                    <Cart/> 
+                  </div>
+                  <div className="lg:hidden">
+                    <WishList/>
+                  </div>
+                  </div>
+                ) : <div></div>
+              }
+
           </div>
 
           <ul className="hidden font-main lg:flex gap-5 z-50 flex-row">
@@ -107,7 +112,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-3">
           
 
-            {users.isLoggedIn ? (
+            {currentUser ? (
               <div className="flex gap-3">
               <div className="flex gap-5">
                 <Cart /> 

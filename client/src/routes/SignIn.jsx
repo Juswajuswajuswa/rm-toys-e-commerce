@@ -1,8 +1,51 @@
 import ArrowLine from "../reusable/ArrowLine";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ShoesBg from "../reusable/ShoesBg";
 
+import { useMutation } from "@tanstack/react-query";
+import axiosInstance from "../lib/axios";
+import { useUserStore } from "../stores/useUserStore";
+import toast from "react-hot-toast";
+
 export default function SignIn() {
+
+  const navigate = useNavigate()
+
+  const {setCurrentUser} = useUserStore()
+
+  const {mutate: loginMutation, isPending} = useMutation({
+    mutationFn: async (userData) => {
+      const res = await axiosInstance.post(`/auth/signin`, userData)
+      return res.data
+    },
+    onSuccess: (userData) => {
+      setCurrentUser(userData)
+      navigate(`/`)
+
+    },
+    onError: (err) => {
+      toast.error(err.response.data.message)
+    }
+  })
+
+
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault()
+
+   try {
+    const formData = new FormData(e.target)
+    const inputs = Object.fromEntries(formData)
+
+    const {email, password} = inputs
+
+    loginMutation({email, password})
+   } catch (error) {
+    console.log(error)
+   }
+
+  }
+
   return (
     <section className="mt-[180px] p-4 font-main text-primary">
       <div className="max-w-[600px] mx-auto overflow-hidden">
@@ -16,7 +59,9 @@ export default function SignIn() {
 
 
         {/* FORM */}
-        <form className="relative border flex gap-2 bg-secondary flex-col border-black p-4 rounded-[5px] pt-[50px] pb-[80px] shadow-lg">
+        <form 
+        onSubmit={handleFormSubmit}
+         className="relative border flex gap-2 bg-secondary flex-col border-black p-4 rounded-[5px] pt-[50px] pb-[80px] shadow-lg">
          
           <div className="flex justify-between flex-col">
             <label htmlFor="email" className="uppercase mb-2">Email: </label>
@@ -28,13 +73,15 @@ export default function SignIn() {
           </div>
 
           <div className="flex justify-center gap-2">
-            <button className="border p-2 px-5 mt-10 border-none bg-primary hover:opacity-95  uppercase font-medium text-white rounded-[5px]">
-              sign in
+            <button disabled={isPending} className="border w-[100px] p-2 px-5 mt-10 border-none bg-primary hover:opacity-95  uppercase font-medium text-white rounded-[5px]">
+              {
+                isPending ? "Loading.." : "sign in"
+              }
             </button>
           </div>
 
 
-          <div className="absolute rounded-b-[10px] bottom-0 left-0 right-0 mx-auto bg-indigo-500 h-[40px]">
+          <div className="absolute rounded-b-[5px] bottom-0 left-0 right-0 mx-auto bg-indigo-500 h-[40px]">
             {/* white background */}
           </div>
         </form>

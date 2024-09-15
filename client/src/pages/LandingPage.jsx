@@ -4,6 +4,7 @@ import { HiShoppingBag } from "react-icons/hi2";
 import ImageSlider from "../components/ImageSlider/ImageSlider";
 
 export default function LandingPage() {
+
   return (
     <section className="h-screen font-main  relative overflow-hidden">
       <div className="relative z-2 h-screen overflow-y-auto max-w-[1280px] mx-auto p-4">
