@@ -7,7 +7,10 @@ export const updateProfile = async (req, res, next) => {
   try {
     const { username, email, password, avatar, phoneNumber } = req.body;
 
-    const hashedPassword = await bcypt.hash(password, 10);
+    let hashedPassword;
+    if (password) {
+     hashedPassword = await bcypt.hash(password, 10);
+    }
 
     const currentUser = await User.findByIdAndUpdate(
       id,

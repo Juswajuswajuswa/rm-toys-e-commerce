@@ -78,7 +78,7 @@ export default function Navbar() {
             </div>
               <Link>
                 <span className="font-main text-xl uppercase ">
-                  CLOTHING LINE
+                  Rosemarie Toys
                 </span>
               </Link>
 

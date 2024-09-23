@@ -21,6 +21,9 @@ export default function ChangeInfoComponent() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [fileError, setFileError] = useState(false);
 
+  console.log(uploadProgress)
+
+
   const currentUser = useUserStore((state) => state.currentUser);
   const setCurrentUser = useUserStore((state) => state.setCurrentUser);
   console.log(currentUser);
@@ -98,10 +101,12 @@ export default function ChangeInfoComponent() {
       (error) => {
         setFileError(true);
         console.log("Upload failed", error);
+        toast.error(error)
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
           setFileError(false);
+          toast.success(`Avatar uploaded`)
           setImageUrl(downloadUrl);
         });
       }
@@ -183,7 +188,7 @@ export default function ChangeInfoComponent() {
                   <input
                     type="password"
                     name="password"
-                    defaultValue={"examples"}
+                    placeholder="password"
                     id="password"
                     className="border border-black px-5 py-2 w-[85%] bg-gray-200 rounded-[5px] outline-none"
                   />
@@ -201,6 +206,7 @@ export default function ChangeInfoComponent() {
                     type="number"
                     name="phoneNumber"
                     id="phoneNumber"
+                    placeholder="phone number"
                     defaultValue={currentUser.phoneNumber}
                     className="border border-black px-5 py-2 w-[85%] bg-gray-200 rounded-[5px] outline-none"
                   />

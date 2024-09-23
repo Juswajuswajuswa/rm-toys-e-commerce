@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
-import noAvatar from "../../assets/noavatar.jpg";
 import { Link } from "react-router-dom";
 import { IoMdArrowDropright } from "react-icons/io";
 import { IoMdArrowDropleft } from "react-icons/io";
@@ -8,6 +7,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { MdCategory } from "react-icons/md";
 import { IoIosStats } from "react-icons/io";
 import { MdKeyboardReturn } from "react-icons/md";
+import { useUserStore } from "../../stores/useUserStore";
 
 
 const adminSideBarItems = [
@@ -51,6 +51,8 @@ const adminSideBarItems = [
 export default function AdminSideBar() {
   const [toggleSideBar, setToggleSideBar] = useState(true);
   const [active, setActive] = useState("dashboard");
+
+  const currentUser = useUserStore(state => state.currentUser)
 
   return (
     <aside
@@ -111,7 +113,7 @@ export default function AdminSideBar() {
 
         <div className="border-t-gray-300 border flex items-center gap-5  pt-3">
           <img
-            src={noAvatar}
+            src={currentUser.avatar}
             alt="avatar.image"
             className={`w-[40px] border border-black rounded-full object-cover`}
           />
