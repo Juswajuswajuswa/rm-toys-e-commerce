@@ -17,16 +17,19 @@ const storeRefreshToken = async (userId, refreshToken) => {
 
 // REGISTER
 export const signup = async (req, res, next) => {
-  const { username, email, password, confirmPassword } = req.body;
+  const { username, email, password, confirmPassword} = req.body;
+
 
   const userExists = await User.findOne({ email });
   if (userExists) {
     return next(handleMakeError(400, "User already exist"));
   }
 
+
+
   if (!username || !email || !password || !confirmPassword) return next(handleMakeError(400, "Please input required fields"))
 
-  if (password.trim() !== confirmPassword.trim()) return next(handleMakeError(400, "passwords are not equal "))
+  if (password !== confirmPassword) return next(handleMakeError(400, "passwords are not equal "))
 
   try {
 

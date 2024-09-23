@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
+import { useMutation } from "@tanstack/react-query";
 
 import app from "../firebase/firebase";
 
@@ -11,6 +12,8 @@ import {
 } from "firebase/storage";
 import { useUserStore } from "../stores/useUserStore";
 import { CiEdit } from "react-icons/ci";
+import axiosInstance from "../lib/axios";
+import toast from "react-hot-toast";
 
 export default function ChangeInfoComponent() {
   const [file, setFile] = useState(null);
@@ -19,9 +22,49 @@ export default function ChangeInfoComponent() {
   const [fileError, setFileError] = useState(false);
 
   const currentUser = useUserStore((state) => state.currentUser);
+  const setCurrentUser = useUserStore((state) => state.setCurrentUser);
   console.log(currentUser);
 
   const fileRef = useRef(null);
+
+  const { mutate: updateProfile } = useMutation({
+    mutationFn: async (data) => {
+      const res = await axiosInstance.post(
+        `/user/update/${currentUser._id}`,
+        data
+      );
+      return res.data;
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      setCurrentUser(data);
+      toast.success("Profile Updated Successfully");
+    },
+    onError: (err) => {
+      toast.error(err.response.data.message);
+    },
+  });
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const inputs = Object.fromEntries(formData);
+
+    const { username, email, password, phoneNumber } = inputs;
+
+    try {
+      updateProfile({
+        username,
+        email,
+        password,
+        avatar: imageUrl ? imageUrl : currentUser.avatar,
+        phoneNumber,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // handleuploadImage
 
@@ -68,7 +111,7 @@ export default function ChangeInfoComponent() {
   return (
     <div>
       <h1 className="text-xl">CHANGE INFORMATION</h1>
-      <form className="my-5 flex flex-col gap-10 ">
+      <form onSubmit={handleFormSubmit} className="my-5 flex flex-col gap-10 ">
         <div className="flex flex-col items-center gap-4 justify-center">
           <p>AVATAR</p>
           <input
@@ -80,11 +123,17 @@ export default function ChangeInfoComponent() {
             name="image"
           />
           <img
-            onClick={() => fileRef.current.click()}
             src={currentUser.avatar}
             alt="avatar.img"
             className="w-[150px] h-[150px] rounded-full border border-black object-cover"
           />
+          <button
+            type="button"
+            onClick={() => fileRef.current.click()}
+            className="bg-primary uppercase text-card px-2 py-1 rounded-[5px]"
+          >
+            Change Avatar
+          </button>
         </div>
 
         <div className="flex flex-col gap-5 w-[90%] md:w-[70%] mx-auto uppercase">
@@ -104,7 +153,7 @@ export default function ChangeInfoComponent() {
                     id="email"
                     className="border border-black px-5 py-2 w-[85%] bg-gray-200 rounded-[5px] outline-none"
                   />
-                  <button>
+                  <button type="button">
                     <CiEdit size={35} className="text-primary" />
                   </button>
                 </div>
@@ -121,7 +170,7 @@ export default function ChangeInfoComponent() {
                     id="username"
                     className="border border-black px-5 py-2 w-[85%] bg-gray-200 rounded-[5px] outline-none"
                   />
-                  <button>
+                  <button type="button">
                     <CiEdit size={35} className="text-primary" />
                   </button>
                 </div>
@@ -138,7 +187,7 @@ export default function ChangeInfoComponent() {
                     id="password"
                     className="border border-black px-5 py-2 w-[85%] bg-gray-200 rounded-[5px] outline-none"
                   />
-                  <button>
+                  <button type="button">
                     <CiEdit size={35} className="text-primary" />
                   </button>
                 </div>
@@ -150,11 +199,12 @@ export default function ChangeInfoComponent() {
                 <div className="flex items-center  justify-between gap-5">
                   <input
                     type="number"
-                    name="phoneNum"
-                    id="phoneNum"
+                    name="phoneNumber"
+                    id="phoneNumber"
+                    defaultValue={currentUser.phoneNumber}
                     className="border border-black px-5 py-2 w-[85%] bg-gray-200 rounded-[5px] outline-none"
                   />
-                  <button>
+                  <button type="button">
                     <CiEdit size={35} className="text-primary" />
                   </button>
                 </div>

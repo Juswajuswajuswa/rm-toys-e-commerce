@@ -3,7 +3,7 @@ import { useUserStore } from "../stores/useUserStore";
 
 export default function ProfileComponent({ setActiveComponent }) {
   const currentUser = useUserStore((state) => state.currentUser);
-  console.log(currentUser);
+  console.log(currentUser)
 
   // firebase
 
@@ -57,7 +57,7 @@ export default function ProfileComponent({ setActiveComponent }) {
             <div className="flex-1">
               <label htmlFor="number">phone number:</label>
               <input
-                value={"johndoe"}
+                value={currentUser.phoneNumber}
                 disabled
                 type="text"
                 name="number"

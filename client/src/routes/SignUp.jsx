@@ -4,23 +4,21 @@ import ShoesBg from "../reusable/ShoesBg";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import axiosInstance from "../lib/axios";
-import { useUserStore } from "../stores/useUserStore";
+// import { useUserStore } from "../stores/useUserStore";
 
 export default function SignUp() {
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-
-  const {setCurrentUser} = useUserStore()
+  // const {setCurrentUser} = useUserStore()
 
   const { mutate: signUpMutation, isPending } = useMutation({
     mutationFn: async (data) => {
       const res = await axiosInstance.post("/auth/signup", data);
       return res.data;
     },
-    onSuccess: (data) => {
-      setCurrentUser(data)
+    onSuccess: () => {
+      navigate(`/sign-in`);
       toast.success("Account created Successfully");
-      navigate(`/sign-in`)
     },
     onError: (err) => {
       toast.error(err.response?.data?.message || "Something went wrong");
@@ -36,9 +34,7 @@ export default function SignUp() {
 
       const { username, email, password, confirmPassword } = inputs;
 
-      signUpMutation({username, email, password, confirmPassword})
-
-    
+      signUpMutation({ username, email, password, confirmPassword });
     } catch (error) {
       console.log(error);
     }

@@ -3,8 +3,12 @@ import { config } from "dotenv";
 import cookieParser from "cookie-parser";
 import { connectDb } from "./lib/db.js";
 import { handleError } from "./middleware/handleError.js";
+
+// routes
 import authRoutes from "../api/routes/auth.route.js";
 import productRoutes from "../api/routes/product.route.js";
+import userRoutes from '../api/routes/user.route.js'
+//
 import cors from "cors";
 
 // Load environment variables from .env file
@@ -25,6 +29,7 @@ app.use(cookieParser());
 
 app.use(`/api/auth`, authRoutes);
 app.use(`/api/products`, productRoutes);
+app.use(`/api/user`, userRoutes)
 
 app.use(handleError);
 

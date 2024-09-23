@@ -20,6 +20,7 @@ export default function SignIn() {
     },
     onSuccess: (userData) => {
       setCurrentUser(userData)
+      console.log(userData)
       navigate(`/`)
 
     },
