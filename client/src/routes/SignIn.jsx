@@ -62,7 +62,7 @@ export default function SignIn() {
         {/* FORM */}
         <form 
         onSubmit={handleFormSubmit}
-         className="relative border flex gap-2 bg-secondary flex-col border-black p-4 rounded-[5px] pt-[50px] pb-[80px] shadow-lg">
+         className="relative border flex gap-2 bg-card flex-col border-black p-4 rounded-[5px] pt-[50px] pb-[80px] shadow-lg">
          
           <div className="flex justify-between flex-col">
             <label htmlFor="email" className="uppercase mb-2">Email: </label>

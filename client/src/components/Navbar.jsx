@@ -7,19 +7,16 @@ import Profile from "./Profile";
 import Settings from "./Settings/Settings";
 import WishList from "./WishList";
 
-
 import { navItems } from "../const/const";
 import { useUserStore } from "../stores/useUserStore";
 
 export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(false);
-  const currentUser = useUserStore(state => state.currentUser)
+  const currentUser = useUserStore((state) => state.currentUser);
 
-  
   return (
-    <header className="bg-yellow fixed p-4 py-5 top-0 left-0 right-0 z-50 text-primary">
+    <header className="bg-[#fffdf6] fixed p-4 py-5 top-0 left-0 right-0 z-50">
       <nav className="flex justify-between max-w-[1280px] mx-auto relative">
-        
         {/* MOBILE NAVBAR */}
         <div
           className={` absolute flex flex-col h-screen w-44 transition-all ${
@@ -72,29 +69,33 @@ export default function Navbar() {
         <div className="flex items-center justify-center lg:justify-between w-full z-40">
           <div className="w-full lg:w-[200px] flex justify-between lg:justify-start relative">
             <div className="lg:hidden">
-            <button onClick={() => setIsExpanded(!isExpanded)}>
-              <CiMenuFries size={20} />
-            </button>
+              <button onClick={() => setIsExpanded(!isExpanded)}>
+                <CiMenuFries size={20} />
+              </button>
             </div>
-              <Link>
-                <span className="font-main text-xl uppercase ">
-                  Rosemarie Toys
-                </span>
-              </Link>
+            <Link>
+              <span className="font-main text-2xl md:text-3xl uppercase font-bold ">
+                <span className="text-primary">R</span>
+                <span className="text-[#fe0002]">M</span>{" "}
+                <span className="text-[#f88609]">T</span>
+                <span className="text-[#0156ff]">O</span>
+                <span className="text-[#9742e7]">Y</span>
+                <span className="text-[#f3e03a]">S</span>
+              </span>
+            </Link>
 
-              {
-               currentUser ? (
-                  <div className="flex gap-3 relative">
-                  <div className="absolute -left-10  lg:hidden">
-                    <Cart/> 
-                  </div>
-                  <div className="lg:hidden">
-                    <WishList/>
-                  </div>
-                  </div>
-                ) : <div></div>
-              }
-
+            {currentUser ? (
+              <div className="flex gap-3 relative">
+                <div className="absolute -left-10  lg:hidden">
+                  <Cart />
+                </div>
+                <div className="lg:hidden">
+                  <WishList />
+                </div>
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
 
           <ul className="hidden font-main lg:flex gap-5 z-50 flex-row">
@@ -110,16 +111,14 @@ export default function Navbar() {
           </ul>
 
           <div className="hidden lg:flex items-center gap-3">
-          
-
             {currentUser ? (
               <div className="flex gap-3">
-              <div className="flex gap-5">
-                <Cart /> 
-                <WishList/>
-              </div>
-              <Settings />
+                <div className="flex gap-5">
+                  <Cart />
+                  <WishList />
                 </div>
+                <Settings />
+              </div>
             ) : (
               <Link to={`/sign-in`}>
                 <button className="font-main text-xl">Sign in</button>

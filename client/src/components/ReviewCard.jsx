@@ -32,7 +32,7 @@ export default function ReviewCard() {
       </div>
 
       <div className="flex-1 flex flex-col gap-4">
-        <p className="w-full border">
+        <p className="w-full ">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur
           labore vel nobis. Lorem ipsum dolor sit amet consectetur adipisicing
         

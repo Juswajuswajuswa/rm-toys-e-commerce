@@ -21,7 +21,7 @@ export default function ProfileComponent({ setActiveComponent }) {
           />
         </div>
 
-        <div className="flex flex-col gap-5 w-[90%] md:w-[70%] mx-auto uppercase">
+        <div className="flex flex-col gap-5 w-[90%] md:w-[80%] mx-auto uppercase">
           <div className="flex flex-col md:flex-row md:items-center my-2 justify-between text-md md:text-lg ">
             <h1 className="my-5">PERSONAL INFORMATION</h1>
             <div onClick={() => setActiveComponent("changeinformation")}>
@@ -68,46 +68,29 @@ export default function ProfileComponent({ setActiveComponent }) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-5 w-[90%] md:w-[70%] mx-auto uppercase">
+        <div className="flex flex-col gap-5 w-[90%] md:w-[80%] mx-auto uppercase">
           <div className="flex flex-col justify-between text-md md:text-lg md:flex-row md:items-center my-2 ">
             <h1 className="my-5">CURRENT SHIPPING ADDRESS</h1>
             <div onClick={() => setActiveComponent("shippingaddress")}>
               <Buttons buttonName={"Edit shipping address"} />
             </div>
           </div>
+
+          {/* ADDRESSES */}
           <div className="flex flex-col justify-between gap-5">
-            <div className="flex-1 flex flex-col ">
-              <label htmlFor="address">address 1: </label>
-              <input
-                value={"johndoe"}
-                disabled
-                type="address"
-                name="address"
-                id="address"
-                className="border w-full bg-gray-200 rounded-[5px] outline-none border-black px-5 py-2"
-              />
-            </div>
-            <div className="flex-1 flex flex-col">
-              <label htmlFor="address">address 2: </label>
-              <input
-                value={"johndoe"}
-                disabled
-                type="address"
-                name="address"
-                id="address"
-                className="border w-full bg-gray-200 rounded-[5px] outline-none border-black px-5 py-2"
-              />
-            </div>
-            <div className="flex-1 flex flex-col">
-              <label htmlFor="address">address 3: </label>
-              <input
-                value={"johndoe"}
-                disabled
-                type="address"
-                name="address"
-                id="address"
-                className="border w-full bg-gray-200 rounded-[5px] outline-none border-black px-5 py-2"
-              />
+            <div className="flex flex-col gap-5">
+              <div className="flex items-center justify-between">
+                <label className="bg-gray-200  p-2 border border-black rounded-[5px] w-[95%]" htmlFor="address">Taguig City</label>
+                <input  className="size-5" type="radio" id="address" name="address" />
+              </div>
+              <div className="flex items-center justify-between">
+                <label className="bg-gray-200  p-2 border border-black rounded-[5px] w-[95%]" htmlFor="address">Taguig City</label>
+                <input className="size-5"  type="radio" id="address" name="address" />
+              </div>
+              <div className="flex items-center justify-between">
+                <label className="bg-gray-200  p-2 border border-black rounded-[5px] w-[95%]" htmlFor="address">Taguig City</label>
+                <input className="size-5" type="radio" id="address" name="address" />
+              </div>
             </div>
           </div>
         </div>

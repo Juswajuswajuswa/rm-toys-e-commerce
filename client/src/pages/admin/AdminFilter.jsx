@@ -1,147 +1,234 @@
-import { FaCheckCircle } from "react-icons/fa";
-// import AdminCategoriesAdd from "../../components/admin/AdminCategoriesAdd";
-import AdminCategoriesTable from "../../components/admin/AdminCategoriesTable";
-import AdminStatCard from "../../components/admin/AdminStatCard";
+import { useState, useCallback } from "react";
+import { IoIosClose } from "react-icons/io";
+import { FaLock, FaLockOpen } from "react-icons/fa";
 import AdminHeader from "../../reusable/Admin/AdminHeader";
-import Buttons from "../../reusable/Buttons";
-import { CiEdit } from "react-icons/ci";
-import { MdDelete } from "react-icons/md";
-import { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axiosInstance from "../../lib/axios";
+import toast from "react-hot-toast";
 
 export default function AdminFilter() {
-  const [addTable, setAddTable] = useState([]);
-  const [valueList, setValueList] = useState([]);
+  const queryClient = useQueryClient();
 
   const [filterName, setFilterName] = useState("");
-  const [valueName, setValueName] = useState("");
+  const [filterValue, setFilterValue] = useState("");
+  const [filterValueArray, setFilterValueArray] = useState([]);
 
-  const newFilterName = (e) => {
-    setFilterName(e.target.value);
+  const [toggleAddTable, setToggleAddTable] = useState(false);
+  const [showEditToggle, setShowEditToggle] = useState(false);
+  const [showDeleteToggle, setShowDeleteToggle] = useState(false);
+  // const [lockToggle, setLockToggle] = useState(false);
+
+  const { data: filters = [], isPending, isError } = useQuery({
+    queryKey: ["filters"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/filter/get-filters`);
+      return res.data;
+    },
+  });
+
+  const { mutate: addFilterMutation}= useMutation({
+    mutationFn: async (data) => {
+      const res = await axiosInstance.post(`/filter/add-filter`, data);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["filters"] });
+      toast.success("Successfully submitted");
+      resetForm();
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.message || "Something went wrong");
+    },
+  });
+
+  const {mutate: deleteFilterMutation} = useMutation({
+    mutationFn: async (filterId) => {
+      const res = await axiosInstance.delete(`/filter/delete-filter/${filterId}`)
+      return res.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ["filters"]})
+      toast.success("Filter deleted Successfully")
+    }, 
+    onError: (err) => {
+      toast.error(err.response.data.message || "something went wrong")
+    }
+  })
+
+
+  const resetForm = useCallback(() => {
+    setFilterValueArray([]);
+    setToggleAddTable(false);
+    setFilterName("");
+    setFilterValue("");
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!filterName.trim() || filterValueArray.length === 0) {
+      toast.error("Please provide a filter name and at least one value");
+      return;
+    }
+    addFilterMutation({ filterName, filterValue: filterValueArray });
   };
 
-  const newValueName = (e) => {
-    setValueName(e.target.value);
-  };
-
-  console.log(addTable)
-
-  const addNewFilter = () => {
-   if (filterName) {
-    setAddTable([
-      ...addTable,
-      {
-        filterName: filterName,
-        filterValue: valueList
-      },
-    ]);
-    setValueName("")
-    setFilterName("")
-    setValueList([])
-   }
-   
-  };
-
-  const addNewValueList = () => {
-    if (valueName) {
-      setValueList(
-        [
-          ...valueList,
-          {value: valueName}
-        ]
-      )
-      setValueName("")
+  const addListValue = () => {
+    if (filterValue.trim()) {
+      setFilterValueArray((prev) => [...prev, filterValue.trim()]);
+      setFilterValue("");
     }
   };
 
+  const removeListValue = (index) => {
+    setFilterValueArray((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // const lockFilter = useCallback(() => {
+  //   setLockToggle((prev) => !prev);
+  //   setShowEditToggle(false);
+  //   setShowDeleteToggle(false);
+  // }, []);
+
+  if (isPending) return <p>Loading...</p>;
+  if (isError) return <p>Error loading filters</p>;
+
   return (
-    <section className="bg-yellow h-screen">
-      <AdminHeader title={"CATEGORIES"} />
-      <div className=" max-w-[90%] pt-14 pb-5  mx-auto flex flex-col gap-5    ">
-        <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-2 md:gap-5 relative font-main">
-          <div className="absolute bg-card -top-7 right-0 w-[80px] border border-black h-[20px] rounded-full"></div>
-          {/* CARD */}
-          <AdminStatCard title={"JACKET"} value={300} />
-          <AdminStatCard title={"SHORTS"} value={5} />
-          <AdminStatCard title={"SHIRT"} value={300} />
-          <AdminStatCard title={"SHOES"} value={300} />
-        </div>
-
-        <div className="flex flex-col-reverse md:flex-row justify-between gap-5">
-          <div className="flex flex-col w-full gap-2">
-            {
-              addTable.map((item) => (
-                <AdminCategoriesTable key={item.filterName} tableName={item.filterName} valueName={item.filterValue}  />
-              ))
-            }
-          </div>
-
-          <form className="font-main border w-full rounded-[5px]  h-[470px] md:w-[40%] border-black bg-card flex flex-col gap-4  p-4 relative ">
-            <div className=" flex md:flex-row">
-              <h1>ADD ADDITIONAL FILTER SECTION</h1>
-            </div>
-
-            <div className="flex flex-col h-full justify-between border gap-5">
-              <div className="flex flex-col justify-between gap-2 ">
-                <label htmlFor="filterName" className=" ">
-                  Filter name:{" "}
-                </label>
+    <section className="bg-yellow min-h-screen">
+      {toggleAddTable && (
+        <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50">
+          <form onSubmit={handleSubmit} className="bg-card border border-black rounded-[5px] p-4 w-[350px] relative">
+            <button
+              type="button"
+              onClick={() => setToggleAddTable(false)}
+              className="absolute -right-2 -top-2 bg-red-600 rounded-full border border-black"
+            >
+              <IoIosClose size={20} />
+            </button>
+            <div className="flex flex-col gap-4">
+              <div>
+                <label htmlFor="filterName" className="block mb-1">Filter Name:</label>
                 <input
-                  type="text"
+                  id="filterName"
                   name="filterName"
                   value={filterName}
-                  onChange={newFilterName}
-                  id="filterName"
-                  className="border outline-none border-black p-1 rounded-[5px]"
+                  onChange={(e) => setFilterName(e.target.value)}
+                  className="w-full border border-black rounded-[5px] p-2"
                 />
-
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="filterValue">Filter value: </label>
-                  <div className=" flex flex-col md:flex-row gap-3">
-                    <div className="flex gap-2  flex-1">
-                      <input
-                        type="text"
-                        className=" border w-full border-black rounded-[5px] p-1"
-                        placeholder="value"
-                        name="filterValue"
-                        value={valueName}
-                        onChange={newValueName}
-                      />
-                    </div>
+              </div>
+              <div className="flex gap-2">
+                <input
+                  value={filterValue}
+                  onChange={(e) => setFilterValue(e.target.value)}
+                  className="flex-grow border border-black rounded-[5px] p-2"
+                  placeholder="Add value"
+                />
+                <button
+                  type="button"
+                  onClick={addListValue}
+                  className="bg-primary text-white px-4 py-2 rounded-[5px] border border-black"
+                >
+                  Add
+                </button>
+              </div>
+              <div className="max-h-[200px] overflow-y-auto">
+                {filterValueArray.map((item, index) => (
+                  <div key={index} className="flex items-center gap-2 mb-2">
+                    <span className="flex-grow border border-black rounded-[5px] p-2">{item}</span>
                     <button
-                      onClick={addNewValueList}
                       type="button"
-                      className=" border w-full md:w-[20%]  border-black rounded-[2.5px] py-1 bg-primary text-card uppercase"
+                      onClick={() => removeListValue(index)}
+                      className="bg-red-600 text-white px-2 py-1 rounded-[5px] border border-black"
                     >
-                      add
+                      Remove
                     </button>
                   </div>
-                  <div className="pt-2">
-                    <ul className={`pt-2 p-2 rounded-[2.5px] ${valueList.length < 1 ? "hidden": "flex"} flex-col gap-2 border border-black min-h-0 max-h-[180px] overflow-y-auto`}>
-                      {valueList.map((item) => (
-                        <li key={item.value} className="flex justify-between">
-                          <p name="jacket">{item.value}</p>
-                          <div className="flex gap-2">
-                            <button
-                              type="button"
-                              className=" text-green-600 hover:text-indigo-300 mr-2"
-                            >
-                              <CiEdit size={25} />
-                            </button>
-                            <button type="button" className=" text-red-600">
-                              <MdDelete size={25} />
-                            </button>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div type="button" onClick={addNewFilter}>
-                <Buttons buttonName={"submit"} icon={<FaCheckCircle />} />
+                ))}
               </div>
             </div>
+            <button
+              type="submit"
+              className="w-full bg-primary text-white rounded-[5px] p-2 mt-4 uppercase border border-black"
+            >
+              Submit
+            </button>
           </form>
+        </div>
+      )}
+
+      <AdminHeader title="FILTER" />
+
+      <div className="max-w-[90%] mx-auto pt-14 pb-5">
+        <div className="bg-card border border-black rounded-[5px] p-4 mb-6 relative">
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => setToggleAddTable(true)}
+              className="bg-primary text-white rounded-[5px] px-4 py-2 uppercase border border-black"
+            >
+              Add Filter Table
+            </button>
+            <button
+              onClick={() => setShowEditToggle((prev) => !prev)}
+              className={`rounded-[5px] px-4 py-2 uppercase border border-black ${
+                showEditToggle ? "bg-red-500" : "bg-primary"
+              } text-white`}
+            >
+              {showEditToggle ? "Cancel Edit" : "Edit"}
+            </button>
+            <button
+              onClick={() => setShowDeleteToggle((prev) => !prev)}
+              className={`bg-red-500 text-white rounded-[5px] px-4 py-2 uppercase border border-black`}
+            >
+              {showDeleteToggle ? "Cancel Delete" : "Delete"}
+            </button>
+          </div>
+          {/* <button
+            // onClick={lockFilter}
+            className="absolute right-4 top-4"
+          >
+            {lockToggle ? <FaLockOpen size={25} /> : <FaLock size={25} />}
+          </button>
+          {lockToggle && (
+            <div className="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center rounded-[5px]">
+              <FaLock size={25} />
+            </div> 
+          )} */}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filters.map((item) => (
+            <div
+              key={item.id}
+              className="bg-card border border-black rounded-[5px] p-4 relative"
+            >
+              {showDeleteToggle && (
+                <button onClick={() => deleteFilterMutation(item._id)}
+                  type="button"
+                  className="absolute -right-2 -top-2 bg-red-600 rounded-full border border-black"
+                >
+                  <IoIosClose size={20} />
+                </button>
+              )}
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-semibold">{item.filterName}</h2>
+                {showEditToggle && (
+                  <button className="bg-primary text-white px-4 py-1 rounded-[5px] border border-black uppercase">
+                    Edit
+                  </button>
+                )}
+              </div>
+              <ul className="space-y-2">
+                {item.filterValue.length > 0 ? (
+                  item.filterValue.map((value) => (
+                    <li key={value} className="border-b pb-1">
+                      {value}
+                    </li>
+                  ))
+                ) : (
+                  <p className="text-gray-500">No values added yet.</p>
+                )}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </section>

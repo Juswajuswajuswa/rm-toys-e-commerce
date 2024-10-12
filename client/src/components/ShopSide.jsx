@@ -1,13 +1,29 @@
 import { useState } from "react";
 import { IoFilter } from "react-icons/io5";
 import { IoSearch } from "react-icons/io5";
-import useFilterVisibility from "../hooks/useFilterVisibility";
 import FilterSection from "./FilterSection";
+import axiosInstance from "../lib/axios";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ShopSide() {
-  const { visibleSection, toggleVisibility } = useFilterVisibility();
   const [showFilter, setShowFilter] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 100]);
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["filters"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/filter/get-filters`);
+      return res.data;
+    },
+  });
+
+  if (isLoading) {
+    return <p>loading...</p>
+  }
+
+  if (isError) {
+    return <p>loading...</p>
+  }
 
   const handlePriceChange = (event) => {
     const value = event.target.value;
@@ -16,7 +32,7 @@ export default function ShopSide() {
 
   return (
     <form className=" flex w-[90%] mx-auto md:w-[320px] justify-center px-5 gap-5 flex-col relative overflow-x-hidden md:justify-start p-3 border-black border rounded-[5px] bg-card">
-      <div className="flex justify-between border-b-gray-400 border pb-5 ">
+      <div className="flex justify-between pb-5 ">
         <h1 className="text-xl">FILTER</h1>
         <button type="button" onClick={() => setShowFilter((prev) => !prev)}>
           <IoFilter size={20} />
@@ -37,11 +53,7 @@ export default function ShopSide() {
         } md:flex flex-col h-full gap-7`}
       >
         {/* sort */}
-        <FilterSection
-          title={"sort"}
-          isVisible={visibleSection.sort}
-          onToggle={() => toggleVisibility("sort")}
-        >
+        <FilterSection title={"sort"}>
           <div className="flex gap-3">
             <input type="radio" name="sort" id="latest" />
             <label htmlFor="latest">LATEST</label>
@@ -54,11 +66,7 @@ export default function ShopSide() {
 
         {/* price range */}
 
-        <FilterSection
-          title={"price range"}
-          isVisible={visibleSection.priceRange}
-          onToggle={() => toggleVisibility("priceRange")}
-        >
+        <FilterSection title={"price range"}>
           <div className={`flex flex-col`}>
             <span className="text-gray-700">PHP {priceRange[1]}</span>
             <input
@@ -75,90 +83,41 @@ export default function ShopSide() {
         </FilterSection>
 
         {/* CATEGORIES */}
-        <FilterSection
-          title={"categories"}
-          isVisible={visibleSection.categories}
-          onToggle={() => toggleVisibility("categories")}
-        >
+
+        {
+          data.map((filter) => (
+            
+        <div key={filter.id} className={` flex-col gap-2  pb-5`}>
+        <div className="flex items-start justify-between">
+          <h1 className="text-xl mb-2 uppercase">{filter.filterName}</h1>
+        </div>
+
+        <div className="flex flex-col gap-2">
           <div className={`flex flex-col gap-2`}>
-            <div className={`flex items-center gap-3`}>
-              <input
-                type="checkbox"
-                className="w-4 h-4  text-blue-600 bg-gray-100 border-gray-300 rounded  dark:bg-gray-700 dark:border-gray-600"
-              />
-              <label htmlFor="jacket">JACKET</label>
-            </div>
-            <div className="flex gap-3 items-center ">
-              <input
-                type="checkbox"
-                className="w-4 h-4  text-blue-600 bg-gray-100 border-gray-300 rounded  dark:bg-gray-700 dark:border-gray-600"
-              />
-              <label htmlFor="jacket">SHORTS</label>
-            </div>
 
-            <div className="flex gap-3 items-center ">
+           {
+            filter.filterValue.map((value) => (
+              <div key={value} className={`flex items-center gap-3`}>
               <input
                 type="checkbox"
                 className="w-4 h-4  text-blue-600 bg-gray-100 border-gray-300 rounded  dark:bg-gray-700 dark:border-gray-600"
+                id={value}
+                name={value}
               />
-              <label htmlFor="jacket">PANTS</label>
+              <label htmlFor={value} className="uppercase" >{value}</label>
             </div>
-            <div className="flex gap-3 items-center ">
-              <input
-                type="checkbox"
-                className="w-4 h-4  text-blue-600 bg-gray-100 border-gray-300 rounded  dark:bg-gray-700 dark:border-gray-600"
-              />
-              <label htmlFor="jacket">SHIRTS</label>
-            </div>
+            ))
+           }
+          
           </div>
-        </FilterSection>
-
-        {/* SIZES */}
-        <FilterSection
-          title={"sizes"}
-          isVisible={visibleSection.sizes}
-          onToggle={() => toggleVisibility("sizes")}
-        >
-          <div className={`flex flex-col gap-2`}>
-            <div className="flex items-center gap-3">
-              <input
-                type="checkbox"
-                className="w-4 h-4  text-blue-600 bg-gray-100 border-gray-300 rounded  dark:bg-gray-700 dark:border-gray-600"
-              />
-              <label htmlFor="jacket">LARGE</label>
-            </div>
-            <div className="flex gap-3 items-center ">
-              <input
-                type="checkbox"
-                className="w-4 h-4  text-blue-600 bg-gray-100 border-gray-300 rounded  dark:bg-gray-700 dark:border-gray-600"
-              />
-              <label htmlFor="jacket">SMALL</label>
-            </div>
-
-            <div className="flex gap-3 items-center ">
-              <input
-                type="checkbox"
-                className="w-4 h-4  text-blue-600 bg-gray-100 border-gray-300 rounded  dark:bg-gray-700 dark:border-gray-600"
-              />
-              <label htmlFor="jacket">XL</label>
-            </div>
-            <div className="flex gap-3 items-center ">
-              <input
-                type="checkbox"
-                className="w-4 h-4  text-blue-600 bg-gray-100 border-gray-300 rounded  dark:bg-gray-700 dark:border-gray-600"
-              />
-              <label htmlFor="jacket">XXL</label>
-            </div>
-          </div>
-        </FilterSection>
+        </div>
+      </div>
+          ))
+        }
 
         {/* COLORS */}
 
-        <FilterSection
-          title={"colors"}
-          isVisible={visibleSection.colors}
-          onToggle={() => toggleVisibility("colors")}
-        >
+        <FilterSection title={"colors"}>
           <div className={`flex flex-wrap gap-2`}>
             <label className="flex items-center space-x-2">
               <input type="checkbox" className="hidden" />
@@ -184,7 +143,7 @@ export default function ShopSide() {
         </FilterSection>
 
         <div>
-          <button className="hover:opacity-95 uppercase justify-center items-center w-full border-black p-2 rounded-[5px] bg-primary text-card">
+          <button className="border hover:opacity-95 uppercase justify-center items-center w-full border-black p-2 rounded-[5px] bg-primary text-card">
             APPLY FILTERS
           </button>
         </div>

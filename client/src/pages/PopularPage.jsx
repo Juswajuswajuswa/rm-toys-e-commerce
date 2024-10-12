@@ -12,11 +12,11 @@ export default function PopularPage() {
         <div className="flex flex-col gap-14">
           <div>
             <div className="mb-7 flex justify-between">
-              <div className="flex items-center bg-primary gap-2 rounded-[5px]">
-                <h1 className=" text-xl  text-card p-2 ">
+              <div className="flex items-center   gap-1 bg-card border border-black rounded-[5px]">
+                <h1 className=" text-xl border-black p-2 ">
                   BEST RATING PRODUCT
                 </h1>
-                <TbPinnedFilled className="text-card" size={25} />
+                <TbPinnedFilled className="text-primary" size={25} />
               </div>
               <button className="text-primary underline">SEE MORE</button>
             </div>
@@ -30,11 +30,11 @@ export default function PopularPage() {
 
           <div>
             <div className="mb-7 flex justify-between">
-              <div className="flex items-center gap-2  bg-primary rounded-[5px]">
-                <h1 className=" text-xl  text-card p-2 ">
+              <div className="flex items-center gap-1 bg-card border border-black rounded-[5px]">
+                <h1 className=" text-xl p-2 ">
                   BEST RATING PRODUCT
                 </h1>
-                <TbPinnedFilled className="text-card" size={25} />
+                <TbPinnedFilled className="text-primary" size={25} />
               </div>
               <button className="text-primary underline">SEE MORE</button>
             </div>
@@ -48,11 +48,11 @@ export default function PopularPage() {
 
           <div>
             <div className="mb-7 flex justify-between">
-              <div className="flex items-center bg-primary rounded-[5px]">
-                <h1 className=" text-xl  text-card p-2 ">
+              <div className="flex items-center gap-1 bg-card border border-black rounded-[5px]">
+                <h1 className=" text-xl  p-2 ">
                   BEST RATING PRODUCT
                 </h1>
-                <TbPinnedFilled className="text-card" size={25} />
+                <TbPinnedFilled className="text-primary" size={25} />
               </div>
               <button className="text-primary underline">SEE MORE</button>
             </div>

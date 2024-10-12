@@ -11,18 +11,18 @@ export default function LandingPage() {
         <div className="flex items-center relative flex-col gap-20 pt-40 lg:pt-52 lg:gap-4  lg:flex-row justify-between">
           <div className="flex flex-col gap-3">
             <div className="flex md:pl-10 lg:pl-0">
-              <h2 className="bg-primary py-1 px-3 rounded-[5px]  tracking-wider text-card font-main uppercase">
-                CLOTHING LINE
+              <h2 className="bg-[#08bb69] py-1 px-3 border border-black rounded-[5px]  tracking-wider text-card font-main uppercase">
+                RM TOYS
               </h2>
             </div>
             <div className="relative z-10  md:w-[700px] lg:w-[690px]">
               <h1 className="font-main text-2xl mx-auto leading-tight md:leading-tight lg:leading-tight  md:text-4xl  lg:text-5xl md:text-center lg:text-start ">
-                Your <span className="text-indigo-700">Style</span>, Redefined:
+                Your <span className="text-[#fe0002]">Style</span>, Redefined:
                 Discover Timeless{" "}
-                <span className="text-indigo-700">Elegance</span> and{" "}
-                <span className="text-indigo-700">Modern</span> Comfort in Every
+                <span className="text-[#f88609]">Elegance</span> and{" "}
+                <span className="text-[#0156ff]">Modern</span> <span className="text-[#9742e7]">Comfort</span> in Every
                 Purchase, Curated Just for{" "}
-                <span className="text-indigo-700">You</span>
+                <span className="text-[#f3e03a]">You</span>
               </h1>
             </div>
 

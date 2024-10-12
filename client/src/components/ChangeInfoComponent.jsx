@@ -135,7 +135,7 @@ export default function ChangeInfoComponent() {
           <button
             type="button"
             onClick={() => fileRef.current.click()}
-            className="bg-primary uppercase text-card px-2 py-1 rounded-[5px]"
+            className="bg-primary uppercase border border-black text-card px-2 py-1 rounded-[5px]"
           >
             Change Avatar
           </button>
@@ -219,7 +219,7 @@ export default function ChangeInfoComponent() {
           </div>
         </div>
         <div className="flex justify-center">
-          <button className="hover:opacity-95 uppercase flex items-center gap-5 px-5 border-black p-2 rounded-[5px] bg-primary text-card">
+          <button className="hover:opacity-95 uppercase flex items-center border gap-5 px-5 border-black p-2 rounded-[5px] bg-primary text-card">
             UPDATE
             <FaCheckCircle size={15} />
           </button>

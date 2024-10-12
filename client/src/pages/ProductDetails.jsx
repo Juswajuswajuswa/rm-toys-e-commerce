@@ -1,5 +1,5 @@
 import { useState } from "react";
-import picture1 from "../assets/jacket1.png";
+import CarToy from "../assets/car.png";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import ReviewModal from "../components/ReviewModal.jsx";
 import StarsRating from "../components/StarsRating.jsx";
@@ -26,21 +26,21 @@ export default function ProductDetails() {
         </div>
 
         <div className="flex flex-col md:flex-row flex-wrap gap-3">
-          <div className="flex w-[320px] md:w-[400px] mx-auto flex-col gap-2">
+          <div className="flex w-[320px] md:w-[400px] justify-between mx-auto flex-col gap-2">
             {/* main picture */}
-            <div className="border  bg-card rounded-[5px] border-black p-3">
-              <img src={picture1} alt="product-main-image" />
+            <div className="border h-full flex items-center bg-card rounded-[5px] border-black p-3">
+              <img src={CarToy} alt="product-main-image" />
             </div>
 
             <div className="flex gap-2 justify-between w-full">
               <div className="bg-card border-black border px-5 p-3 rounded-[5px]">
-                <img src={picture1} alt="" className="w-[85px] h-auto" />
+                <img src={CarToy} alt="" className="w-[85px] h-auto" />
               </div>
               <div className="bg-card border-black border px-5 p-3 rounded-[5px]">
-                <img src={picture1} alt="" className="w-[85px] h-auto" />
+                <img src={CarToy} alt="" className="w-[85px] h-auto" />
               </div>
               <div className="bg-card border-black border px-5 p-3 rounded-[5px]">
-                <img src={picture1} alt="" className="w-[85px] h-auto" />
+                <img src={CarToy} alt="" className="w-[85px] h-auto" />
               </div>
             </div>
           </div>

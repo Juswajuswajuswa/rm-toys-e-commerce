@@ -1,4 +1,5 @@
 import GucciPic from "../assets/jacket1.png";
+import CarToy from "../assets/car.png";
 import { FaCartPlus } from "react-icons/fa";
 import { IoHeart } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
@@ -7,12 +8,12 @@ import StarsRating from "./StarsRating";
 
 export default function ShopProductCards() {
   return (
-    <div className="w-80 md:w-full h-96 border mx-auto font-main items-center flex flex-col justify-center group rounded-[5px] bg-card border-black shadow-md relative ">
-      <div className="border p-1 text-sm z-10 bg-primary text-card font-medium absolute top-[-10px] right-[-10px] border-black rounded-[5px]">
+    <div className="w-80 md:w-full h-[350px] border mx-auto font-main items-center flex flex-col justify-center group rounded-[5px] bg-card border-black shadow-md relative ">
+      <div className="border p-1 text-sm z-10 bg-primary uppercase text-card font-medium absolute top-[-10px] right-[-10px] border-black rounded-[5px]">
         JACKET
       </div>
       <div className="w-full flex justify-center relative overflow-hidden group-hover:bg-primary rounded-t-[5px]">
-        <img src={GucciPic} className="w-52 h-auto" />
+        <img src={CarToy} className="w-60 h-auto" />
         <div className="w-full absolute bottom-[-100%] border border-t-black transition-all group-hover:bottom-0 text-black bg-card">
           <ul className="p-2 flex flex-col gap-2">
             <li  className="border-b flex justify-between items-center border-black cursor-pointer hover:bg-gray-300 py-1">
@@ -31,7 +32,7 @@ export default function ShopProductCards() {
         </div>
       </div>
 
-      <div className="p-2 flex flex-col justify-between bg-card border-t-gray-300 border text-primary rounded-b-[5px] flex-1 w-full relative">
+      <div className="p-2 flex flex-col justify-between bg-card border-t-gray-300 border rounded-b-[5px] flex-1 w-full relative">
         <div className="flex w-full justify-between">
           <p>JACKET 1</p>
           <p className="uppercase">400php</p>

@@ -6,6 +6,7 @@ import 'swiper/css/scrollbar';
 
 
 import jacket1 from '../../assets/jacket1.png'
+import car from '../../assets/car.png'
 import ImageCard from "./ImageCard";
 
 export default function ImageSlider() {
@@ -30,16 +31,16 @@ export default function ImageSlider() {
   initialSlide={2} // Center the second slide initially
 >
   <SwiperSlide>
-    <ImageCard picture={jacket1} />
+    <ImageCard picture={car} />
   </SwiperSlide>
   <SwiperSlide>
-    <ImageCard picture={jacket1} />
+    <ImageCard picture={car} />
   </SwiperSlide>
   <SwiperSlide>
-    <ImageCard picture={jacket1} />
+    <ImageCard picture={car} />
   </SwiperSlide>
   <SwiperSlide>
-    <ImageCard picture={jacket1} />
+    <ImageCard picture={car} />
   </SwiperSlide>
 </Swiper>
 

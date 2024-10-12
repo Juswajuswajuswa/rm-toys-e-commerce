@@ -7,9 +7,9 @@ import { useUserStore } from '../stores/useUserStore';
 
 const  RootLayout = () => {
   return (
-    <div className="text-primary font-main-text">
+    <div className=" font-main-text">
       
-      <header className=' text-red-700'>
+      <header>
         <Navbar/>
       </header>
 
@@ -31,9 +31,9 @@ const RequiredAuth = () => {
   return !currentUser ? (
     <Navigate to={`/sign-in`} />
   ) : (
-    <div className="text-primary font-main-text">
+    <div className="font-main-text">
       
-    <header className=' text-red-700'>
+    <header>
       <Navbar/>
     </header>
   
@@ -62,7 +62,7 @@ const AdminLayout = () => {
         <main className="flex-1 overflow-y-auto">
           <Outlet />
         </main>
-
+        <Toaster/>
     </div>
   )
 }

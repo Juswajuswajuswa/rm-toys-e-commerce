@@ -36,6 +36,7 @@ const adminSideBarItems = [
     path: "/admin/filter",
     icon: <MdCategory size={20} />,
   },
+
   // {
   //   name: "settings",
   //   path: "/admin/dashboard",
@@ -56,14 +57,14 @@ export default function AdminSideBar() {
 
   return (
     <aside
-      className={`z-50 text-primary border transition-all border-r-gray-500 p-3 bg-card h-screen ${
+      className={`z-50  border transition-all border-r-gray-500 p-3 bg-card h-screen ${
         toggleSideBar ? "w-52" : "w-16"
       } font-main`}
     >
-      <div className="flex h-full flex-col gap-10">
-        <div className="flex items-center border-b-gray-300 border pb-5 justify-between">
+      <div className="flex h-full flex-col gap-8">
+        <div className="flex items-center pb-5 justify-between">
           <h1 className={`text-xl ${toggleSideBar ? "block" : "hidden"}`}>
-            CLOTHING LINE
+            RM TOYS
           </h1>
           <button onClick={() => setToggleSideBar(!toggleSideBar)}>
             {toggleSideBar ? (
@@ -82,7 +83,7 @@ export default function AdminSideBar() {
                 onClick={() => setActive(item.name)}
                 className={`relative group ${
                   active === item.name ? "bg-indigo-300" : "hover:bg-indigo-200"
-                } border-b-gray-300 border rounded-[5px] p-1`}
+                } border-b-gray-300 border-t-0 border-r-0 border-l-0 border rounded-[5px] p-1`}
               >
                 <Link
                   to={item.path}

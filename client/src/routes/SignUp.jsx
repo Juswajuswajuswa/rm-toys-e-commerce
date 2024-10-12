@@ -52,7 +52,7 @@ export default function SignUp() {
         </div>
         <form
           onSubmit={handleFormSubmit}
-          className="relative border flex gap-2 bg-secondary flex-col border-[#313031] p-4 rounded-[5px] pt-[50px] pb-[80px] shadow-lg"
+          className="relative border flex gap-2 bg-card flex-col border-[#313031] p-4 rounded-[5px] pt-[50px] pb-[80px] shadow-lg"
         >
           <div className="flex justify-between flex-col">
             <label htmlFor="email" className="uppercase mb-2">
@@ -102,7 +102,7 @@ export default function SignUp() {
           <div className="flex justify-center mt-10 gap-2">
             <button
               disabled={isPending}
-              className="border p-2 px-5  w-[100px] border-none bg-[#313031] hover:opacity-95  uppercase font-medium text-white rounded-[5px]"
+              className="border p-2 px-5  bg-primary w-[100px] border-none bg-[#313031] hover:opacity-95  uppercase font-medium text-white rounded-[5px]"
             >
               sign up
             </button>

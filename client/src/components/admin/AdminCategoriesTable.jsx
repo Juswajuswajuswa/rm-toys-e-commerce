@@ -1,19 +1,14 @@
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 
-// const CATEGORIES_DATA = [
-//   { id: 1, name: "JACKET", productsCount: 1200 },
-//   { id: 2, name: "SHOES", productsCount: 800 },
-//   { id: 3, name: "SHIRTS", productsCount: 650 },
-//   { id: 4, name: "PANTS", productsCount: 950 },
-//   { id: 5, name: "PANTS", productsCount: 950 },
-// ];
-
 export default function AdminCategoriesTable({ tableName, valueName }) {
   return (
     <div className="font-main border flex-1 rounded-[5px] border-black bg-card relative ">
       <div className=" border flex-col border-b-black rounded-t-[5px] flex md:flex-row items-center justify-between  p-4">
         <h1 className="uppercase">{tableName}</h1>
+        <div className="flex gap-2">
+          <button className="border border-black bg-primary text-card p-1 px-4 rounded-[5px]">ADD NEW VALUE</button>
+        </div>
       </div>
 
       <div className="overflow-y-auto  h-[400px] py-3">
@@ -36,10 +31,6 @@ export default function AdminCategoriesTable({ tableName, valueName }) {
                 <td className="text-center py-4 uppercase">
                   <p>{item.value}</p>
                 </td>
-
-                {/* <td className="text-center py-4">
-            <p>{item.productsCount}</p>
-          </td> */}
 
                 <td className="text-center py-4">
                   <button className="text-green-600 hover:text-indigo-300 mr-2">

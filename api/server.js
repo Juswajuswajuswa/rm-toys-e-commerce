@@ -8,6 +8,7 @@ import { handleError } from "./middleware/handleError.js";
 import authRoutes from "../api/routes/auth.route.js";
 import productRoutes from "../api/routes/product.route.js";
 import userRoutes from '../api/routes/user.route.js'
+import filterRoutes from '../api/routes/filter.route.js'
 //
 import cors from "cors";
 
@@ -30,6 +31,7 @@ app.use(cookieParser());
 app.use(`/api/auth`, authRoutes);
 app.use(`/api/products`, productRoutes);
 app.use(`/api/user`, userRoutes)
+app.use(`/api/filter`, filterRoutes)
 
 app.use(handleError);
 
