@@ -26,6 +26,7 @@ import AdminFilter from './pages/admin/AdminFilter.jsx'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { PublicRoute } from './routes/PurblicRoute.jsx'
 import { ProtectedCustomerRoute } from './routes/ProtectedRoutes/ProtectedCustomerRoute.jsx'
+import AdminEditProducts from './pages/admin/AdminEditProduct.jsx'
   
 const queryClient = new QueryClient()
 
@@ -111,6 +112,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/addProducts",
         element: <AdminAddProducts/>
+      },
+      {
+        path: "/admin/editProduct/:editProductId",
+        element: <AdminEditProducts/>
       },
     ]
   },

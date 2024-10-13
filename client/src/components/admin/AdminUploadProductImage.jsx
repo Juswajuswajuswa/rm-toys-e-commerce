@@ -12,12 +12,10 @@
   import { MdDelete } from "react-icons/md";
 
   export default function AdminUploadProductImage({images, setImages}) {
-    // Stores the image URLs for preview
     const [files, setFiles] = useState([]); // Stores the actual files to be uploaded
     const [uploading, setUploading] = useState(false);
-
-   console.log(files)
     
+
     const handleImageChange = (e) => {
       const selectedFiles = Array.from(e.target.files);
       if (selectedFiles.length + images.length > 4) {

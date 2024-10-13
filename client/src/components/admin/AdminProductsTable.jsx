@@ -1,93 +1,18 @@
 import { IoSearch } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../../lib/axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const PRODUCT_DATA = [
-  {
-    id: 1,
-    name: "Wireless Earbuds",
-    category: "Electronics",
-    price: 59.99,
-    stock: 143,
-    sales: 1200,
-  },
-  {
-    id: 2,
-    name: "Leather Wallet",
-    category: "Accessories",
-    price: 39.99,
-    stock: 89,
-    sales: 800,
-  },
-  {
-    id: 3,
-    name: "Smart Watch",
-    category: "Electronics",
-    price: 199.99,
-    stock: 56,
-    sales: 650,
-  },
-  {
-    id: 4,
-    name: "Yoga Mat",
-    category: "Fitness",
-    price: 29.99,
-    stock: 210,
-    sales: 950,
-  },
-  {
-    id: 5,
-    name: "Coffee Maker",
-    category: "Home",
-    price: 79.99,
-    stock: 78,
-    sales: 720,
-  },
-  {
-    id: 6,
-    name: "Coffee Maker",
-    category: "Home",
-    price: 79.99,
-    stock: 78,
-    sales: 720,
-  },
-  {
-    id: 7,
-    name: "Coffee Maker",
-    category: "Home",
-    price: 79.99,
-    stock: 78,
-    sales: 720,
-  },
-  {
-    id: 8,
-    name: "Coffee Maker",
-    category: "Home",
-    price: 79.99,
-    stock: 78,
-    sales: 720,
-  },
-  {
-    id: 9,
-    name: "Coffee Maker",
-    category: "Home",
-    price: 79.99,
-    stock: 78,
-    sales: 720,
-  },
-  {
-    id: 10,
-    name: "Coffee Maker",
-    category: "Home",
-    price: 79.99,
-    stock: 78,
-    sales: 720,
-  },
-];
 
 export default function AdminProductsTable() {
+
+	const queryClient = useQueryClient()
+
+	const navigate = useNavigate()
+
   const {
     data: products = [],
     isPending,
@@ -100,8 +25,27 @@ export default function AdminProductsTable() {
     },
   });
 
+
+  const {mutate: deleteProductMutation} = useMutation({
+	mutationFn: async (productId) => {
+		const res = await axiosInstance.delete(`/product/delete-product/${productId}`)
+		return res.data
+	},
+	onSuccess: () => {
+		queryClient.invalidateQueries({queryKey: ["products"]})
+		toast.success("Successfully Deleted")
+	},
+	onError: (err) => {
+		toast.error(err.response.data.message || "something went wrong!")
+	} 
+  })
+
   console.log(products)
 
+
+  const navigateToeditPage = (editId) => (
+	navigate(`/admin/editProduct/${editId}`)
+  )
    
 
   if (isPending) return <p>Loading...</p>;
@@ -158,10 +102,12 @@ export default function AdminProductsTable() {
                   {product.stocks}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap gap-3 text-sm flex justify-center">
-                  <button className="text-green-600 hover:text-indigo-300 mr-2">
+                  <button onClick={() => navigateToeditPage(product._id)}
+				  className="text-green-600 hover:text-indigo-300 mr-2">
                     <CiEdit size={25} />
                   </button>
-                  <button className="text-red-600 hover:text-red-300">
+                  <button onClick={() => deleteProductMutation(product._id)}
+				  className="text-red-600 hover:text-red-300">
                     <MdDelete size={25} />
                   </button>
                   <button className="text-red-600 hover:text-red-300">
