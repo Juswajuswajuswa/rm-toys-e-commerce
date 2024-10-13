@@ -76,6 +76,9 @@ export default function AdminProductsTable() {
 									<button className='text-red-600 hover:text-red-300'>
 									<MdDelete size={25}/>
 									</button>
+									<button className='text-red-600 hover:text-red-300'>
+										ADD TO SLIDER
+									</button>
 								</td>
 							</tr>
 						))}

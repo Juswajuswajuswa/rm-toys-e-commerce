@@ -19,9 +19,7 @@ export default function ChangeInfoComponent() {
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [fileError, setFileError] = useState(false);
-
-  console.log(uploadProgress)
+  const [fileError, setFileError] = useState(false)
 
 
   const currentUser = useUserStore((state) => state.currentUser);
@@ -47,6 +45,7 @@ export default function ChangeInfoComponent() {
       toast.error(err.response.data.message);
     },
   });
+
 
   const handleFormSubmit = (e) => {
     e.preventDefault();

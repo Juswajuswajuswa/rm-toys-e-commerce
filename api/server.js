@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(`/api/auth`, authRoutes);
-app.use(`/api/products`, productRoutes);
+app.use(`/api/product`, productRoutes);
 app.use(`/api/user`, userRoutes)
 app.use(`/api/filter`, filterRoutes)
 

@@ -21,16 +21,23 @@ const ProductModelSchema = new mongoose.Schema({
     
     stocks: {
         type: Number,
-        required: true
+        required: true,
+        default: 0
     },
 
     discount: {
-        type: Number
+        type: Number,
+        default: 0
     },
 
     productImages: {
         type: Array,
         required: true
+    },
+
+    isBestProduct: {
+        type: Boolean,
+        default: false
     }
 })
 

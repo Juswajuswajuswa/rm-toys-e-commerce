@@ -5,7 +5,7 @@ import { requireAdmin, requireAuth } from '../middleware/auth.middleware.js'
 
 const router = express.Router()
 
-router.post(`/`, requireAuth, requireAdmin, addProduct)
+router.post(`/add-product`,addProduct)
 
 
 export default router

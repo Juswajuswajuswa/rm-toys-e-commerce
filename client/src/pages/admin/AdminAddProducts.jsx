@@ -8,8 +8,19 @@ import { IoIosAdd } from "react-icons/io";
 import Buttons from "../../reusable/Buttons";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../../lib/axios";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function AdminAddProducts() {
+  const [images, setImages] = useState([]);
+
+  const [label, setLabel] = useState("");
+  const [value, setValue] = useState("");
+  const [productsDetailsArray, setProductsDetailsArray] = useState([]);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentEditIndex, setCurrentIndex] = useState(null);
+
   const { data, isPending, isError } = useQuery({
     queryKey: ["filters"],
     queryFn: async () => {
@@ -18,12 +29,65 @@ export default function AdminAddProducts() {
     },
   });
 
+  const handleSubmitLabelValueObject = () => {
+    const isDuplicate = productsDetailsArray.some(
+      (detail, index) => detail.label === label && index !== currentEditIndex
+    );
+
+    if (!label || !value) {
+      toast.error("Both label and value are required.");
+    } else if (isDuplicate) {
+      toast.error("Label already exists. Please enter a unique label.");
+    } else {
+      if (isEditing) {
+        handleUpdateLabelValue()
+      } else {
+        handleAddProductLabelValue()
+      }
+
+      setLabel("");
+      setValue("");
+    }
+  };
+
+  const handleAddProductLabelValue = () => {
+    setProductsDetailsArray((prevDetails) => [
+      ...prevDetails,
+      { label: label, value: value },
+    ]);
+    setLabel("");
+    setValue("");
+  }
+
+  const handleUpdateLabelValue = () => {
+    const updateDetails = productsDetailsArray.map((item, index) =>
+      index === currentEditIndex ? { label, value } : item
+    );
+
+    setProductsDetailsArray(updateDetails)
+    setIsEditing(false)
+    setCurrentIndex(null)
+  };
+
+  const handleEditLabelValue = (index) => {
+    setIsEditing(true)
+    setCurrentIndex(index)
+    setLabel(productsDetailsArray[index].label); // Load the label and value into the inputs
+    setValue(productsDetailsArray[index].value);
+  }
+
+  const handleRemoveLabelValue = (index) => {
+    setProductsDetailsArray((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  console.log(productsDetailsArray);
+
   if (isPending) {
-    return <p>awdwad</p>
+    return <p>awdwad</p>;
   }
 
   if (isError) {
-    return <p>awdwad</p>
+    return <p>awdwad</p>;
   }
 
   return (
@@ -63,6 +127,8 @@ export default function AdminAddProducts() {
                         placeholder="label"
                         name="label"
                         id="label"
+                        value={label}
+                        onChange={(e) => setLabel(e.target.value)}
                         className="w-[100px] px-2 border border-black rounded-[5px]"
                       />
                       <label htmlFor="value">VALUE</label>
@@ -71,38 +137,53 @@ export default function AdminAddProducts() {
                         placeholder="value"
                         name="value"
                         id="value"
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
                         className="w-[100px] px-2 border border-black rounded-[5px]"
                       />
                     </div>
-                    <div className="w-full md:w-[170px]">
+                    <div
+                      onClick={handleSubmitLabelValueObject}
+                      className="w-full md:w-[170px]"
+                    >
                       <Buttons
-                        buttonName={"add details"}
+                        buttonName={`${isEditing ? "update" : "add details"}`}
                         icon={<IoIosAdd size={25} />}
                       />
                     </div>
                   </div>
 
                   {/* DETAILS GOES HERE */}
-                  <div className="">
-                    <ul className="flex flex-col gap-4">
-                      <li className="flex items-center overflow-x-auto gap-2 justify-between bg-white rounded-[5px] p-2 border-black border">
-                        <div className="flex gap-5">
-                          <p className="text-sm">label</p>
-                          {":"}
-                          <p className="text-sm">valu</p>
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            type="button"
-                            className=" text-green-600 hover:text-indigo-300 mr-2"
+                  <div className="overflow-y-auto max-h-[281px]">
+                    <ul className="flex flex-col gap-4  ">
+                      {productsDetailsArray.length > 0 &&
+                        productsDetailsArray.map((item, index) => (
+                          <li
+                            key={index}
+                            className="flex items-center overflow-x-auto gap-2 justify-between bg-white rounded-[5px] p-2 border-black border"
                           >
-                            <CiEdit size={25} />
-                          </button>
-                          <button type="button" className=" text-red-600">
-                            <MdDelete size={25} />
-                          </button>
-                        </div>
-                      </li>
+                            <div className="flex gap-5">
+                              <p className="text-sm">{item.label}</p>
+                              {":"}
+                              <p className="text-sm">{item.value}</p>
+                            </div>
+                            <div className="flex gap-2">
+                              <button onClick={() => handleEditLabelValue(index)}
+                                type="button"
+                                className=" text-green-600 hover:text-indigo-300 mr-2"
+                              >
+                                <CiEdit size={25} />
+                              </button>
+                              <button
+                                onClick={() => handleRemoveLabelValue(index)}
+                                type="button"
+                                className=" text-red-600"
+                              >
+                                <MdDelete size={25} />
+                              </button>
+                            </div>
+                          </li>
+                        ))}
                     </ul>
                   </div>
                 </div>
@@ -199,7 +280,7 @@ export default function AdminAddProducts() {
           </div>
 
           {/* COLUMN 2 */}
-          <AdminUploadProductImage />
+          <AdminUploadProductImage images={images} setImages={setImages} />
         </form>
       </div>
     </section>

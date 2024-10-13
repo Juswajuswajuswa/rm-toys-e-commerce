@@ -10,12 +10,16 @@ import WishList from "./WishList";
 import { navItems } from "../const/const";
 import { useUserStore } from "../stores/useUserStore";
 
+// LOGO
+
+import RMTOYSLOGO from '../assets/RMTOYSLOGOFINAL.png'
+
 export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(false);
   const currentUser = useUserStore((state) => state.currentUser);
 
   return (
-    <header className="bg-[#fffdf6] fixed p-4 py-5 top-0 left-0 right-0 z-50">
+    <header className="bg-[#fffdf6] fixed p-4 py-4 top-0 left-0 right-0 z-50">
       <nav className="flex justify-between max-w-[1280px] mx-auto relative">
         {/* MOBILE NAVBAR */}
         <div
@@ -73,15 +77,9 @@ export default function Navbar() {
                 <CiMenuFries size={20} />
               </button>
             </div>
+          
             <Link>
-              <span className="font-main text-2xl md:text-3xl uppercase font-bold ">
-                <span className="text-primary">R</span>
-                <span className="text-[#fe0002]">M</span>{" "}
-                <span className="text-[#f88609]">T</span>
-                <span className="text-[#0156ff]">O</span>
-                <span className="text-[#9742e7]">Y</span>
-                <span className="text-[#f3e03a]">S</span>
-              </span>
+              <img src={RMTOYSLOGO} className="w-[90px]" alt="" />
             </Link>
 
             {currentUser ? (

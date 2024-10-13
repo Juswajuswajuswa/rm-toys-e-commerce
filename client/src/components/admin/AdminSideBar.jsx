@@ -10,6 +10,9 @@ import { MdKeyboardReturn } from "react-icons/md";
 import { useUserStore } from "../../stores/useUserStore";
 
 
+import RMTOYSLOGO from '../../assets/RMTOYSLOGOFINAL.png'
+
+
 const adminSideBarItems = [
   {
     name: "overview",
@@ -63,9 +66,9 @@ export default function AdminSideBar() {
     >
       <div className="flex h-full flex-col gap-8">
         <div className="flex items-center pb-5 justify-between">
-          <h1 className={`text-xl ${toggleSideBar ? "block" : "hidden"}`}>
-            RM TOYS
-          </h1>
+          <button className={`text-xl py-2 ${toggleSideBar ? "block" : "hidden"}`}>
+            <img src={RMTOYSLOGO} className="w-[90px]" alt="" />
+          </button>
           <button onClick={() => setToggleSideBar(!toggleSideBar)}>
             {toggleSideBar ? (
               <IoMdArrowDropright size={30} />
