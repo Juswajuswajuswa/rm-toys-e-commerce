@@ -9,7 +9,13 @@ const ProductModelSchema = new mongoose.Schema({
         unique: true
     },
 
-    description: {
+    price: {
+        type: Number,
+        min: 0,
+        required: true
+    },
+
+    productDescription: {
         type: String,
         required: true
     },
@@ -38,6 +44,11 @@ const ProductModelSchema = new mongoose.Schema({
     isBestProduct: {
         type: Boolean,
         default: false
+    },
+
+    filters: {
+        type: Array,
+        required: true
     }
 })
 

@@ -6,15 +6,34 @@ import StarsRating from "../components/StarsRating.jsx";
 import Buttons from "../reusable/Buttons.jsx";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
+import axiosInstance from "../lib/axios.js";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ProductDetails() {
   const [hideShowDetails, setHideShowDetails] = useState(true);
   const [showModalReview, setShowModalReview] = useState(false);
   const [rating, setRating] = useState(4);
 
+
+  const {data: products = [], isPending, isError} = useQuery({
+    queryKey: ["products"],
+    queryFn:  async() => {
+      const res = await axiosInstance.get(`/product/get-products`)
+      return res.data
+    }
+  })
+
+
+
+  if (isPending) return <p>Loading...</p>;
+  if (isError) return <p>Error loading filters</p>;
+
   const ShowModal = () => setShowModalReview(true);
 
   const CloseShowModal = () => setShowModalReview(false);
+
+
+
 
   return (
     <section className="p-3 pt-[130px] font-main relative">
