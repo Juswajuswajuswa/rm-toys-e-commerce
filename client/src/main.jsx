@@ -27,6 +27,10 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { PublicRoute } from './routes/PurblicRoute.jsx'
 import { ProtectedCustomerRoute } from './routes/ProtectedRoutes/ProtectedCustomerRoute.jsx'
 import AdminEditProducts from './pages/admin/AdminEditProduct.jsx'
+import AdminAddSupplier from './pages/admin/AdminAddSupplier.jsx'
+import AdminSupplier from './pages/admin/AdminSupplier.jsx'
+import AdminCategory from './pages/admin/AdminCategory.jsx'
+import AdminAddCategory from './pages/admin/AdminAddCategory.jsx'
   
 const queryClient = new QueryClient()
 
@@ -97,18 +101,29 @@ const router = createBrowserRouter([
         path: "",
         element: <AdminOverview/>
       },
+
+      // OVERVIEW
+
+
       {
         path: "/admin/overview",
         element: <AdminOverview/>
       },
-      {
-        path: "/admin/products",
-        element: <AdminProducts/>
-      },
+
+      // FILTER
+
       {
         path: "/admin/filter",
         element: <AdminFilter/>
       },
+
+      // PRODUCTS
+
+      {
+        path: "/admin/products",
+        element: <AdminProducts/>
+      },
+     
       {
         path: "/admin/addProducts",
         element: <AdminAddProducts/>
@@ -116,6 +131,28 @@ const router = createBrowserRouter([
       {
         path: "/admin/editProduct/:editProductId",
         element: <AdminEditProducts/>
+      },
+
+       // SUPPLIER
+
+      {
+        path: "/admin/supplier",
+        element: <AdminSupplier/>
+      },
+      {
+        path: "/admin/addSupplier",
+        element: <AdminAddSupplier/>
+      },
+
+      // CATEGORY
+      
+      {
+        path: "/admin/category",
+        element: <AdminCategory/>
+      },
+      {
+        path: "/admin/addCategory",
+        element: <AdminAddCategory/>
       },
     ]
   },

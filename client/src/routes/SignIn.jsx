@@ -55,7 +55,7 @@ export default function SignIn() {
          <div className="relative flex-1">
           <ArrowLine arrowWidth={"90%"} bottomNeg={"50%"} arrowLeft={"0px"}/>
           </div>
-          <span className="border bg-[#313031] opacity-80 text-white border-primary py-1 rounded-[5px] px-3">SIGN IN</span>
+          <span className="border bg-[#313031] opacity-80 text-white  py-1 rounded-[5px] px-3">SIGN IN</span>
         </div>
 
 

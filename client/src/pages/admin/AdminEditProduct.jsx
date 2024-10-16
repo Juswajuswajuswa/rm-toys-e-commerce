@@ -159,7 +159,7 @@ export default function AdminEditProducts() {
 
   return (
     <section className="bg-yellow h-screen font-main">
-      <AdminHeader title={"ADD NEW PRODUCTS"} />
+      <AdminHeader title={"EDIT PRODUCTS"} />
 
       <div className="max-w-[90%] pt-14 pb-5 mx-auto flex gap-5 flex-col">
         <form

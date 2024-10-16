@@ -102,7 +102,7 @@ export default function SignUp() {
           <div className="flex justify-center mt-10 gap-2">
             <button
               disabled={isPending}
-              className="border p-2 px-5  bg-primary w-[100px] border-none bg-[#313031] hover:opacity-95  uppercase font-medium text-white rounded-[5px]"
+              className="border p-2 px-5  bg-primary w-[100px] border-none  hover:opacity-95  uppercase font-medium text-white rounded-[5px]"
             >
               sign up
             </button>

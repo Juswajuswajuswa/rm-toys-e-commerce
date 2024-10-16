@@ -3,15 +3,12 @@ import { TbLayoutDashboardFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { IoMdArrowDropright } from "react-icons/io";
 import { IoMdArrowDropleft } from "react-icons/io";
-import { FaShoppingCart } from "react-icons/fa";
 import { MdCategory } from "react-icons/md";
 import { IoIosStats } from "react-icons/io";
 import { MdKeyboardReturn } from "react-icons/md";
 import { useUserStore } from "../../stores/useUserStore";
 
-
-import RMTOYSLOGO from '../../assets/RMTOYSLOGOFINAL.png'
-
+import RMTOYSLOGO from "../../assets/RMTOYSLOGOFINAL.png";
 
 const adminSideBarItems = [
   {
@@ -21,18 +18,60 @@ const adminSideBarItems = [
   },
   {
     name: "Order Status",
-    path: "/admin/addProducts",
-    icon: <TbLayoutDashboardFilled size={20} />,  
-  },
-  {
-    name: "products",
-    path: "/admin/products",
-    icon: <FaShoppingCart size={20} />,
-  },
-  {
-    name: "add products",
-    path: "/admin/addProducts",
+    // path: "/admin/addProducts",
     icon: <TbLayoutDashboardFilled size={20} />,
+  },
+  {
+    name: "Product Maintenance",
+    icon: <TbLayoutDashboardFilled size={20} />,
+    inner: [
+      {
+        name: "Products",
+        path: "/admin/products",
+      },
+      {
+        name: "Add Product",
+        path: "/admin/addProducts",
+      },
+      {
+        name: "Products Draft",
+        path: "/admin/addProducts",
+      },
+      {
+        name: "Products Reviews",
+        path: "/admin/addProducts",
+      },
+      
+     
+    ],
+  },
+  {
+    name: "Category Maintenance",
+    icon: <MdCategory size={20} />,
+    inner: [
+      {
+        name: "Category",
+        path: "/admin/category"
+      },
+      {
+        name: "Add Category",
+        path: "/admin/addCategory",
+      },
+    ]
+  },
+  {
+    name: "Supplier Maintenance",
+    icon: <MdCategory size={20} />,
+    inner: [
+      {
+        name: "Supplier",
+        path: "/admin/supplier"
+      },
+      {
+        name: "Add Supplier",
+        path: "/admin/addSupplier"
+      },
+    ]
   },
   {
     name: "Manage Filter",
@@ -56,7 +95,7 @@ export default function AdminSideBar() {
   const [toggleSideBar, setToggleSideBar] = useState(true);
   const [active, setActive] = useState("dashboard");
 
-  const currentUser = useUserStore(state => state.currentUser)
+  const currentUser = useUserStore((state) => state.currentUser);
 
   return (
     <aside
@@ -66,7 +105,9 @@ export default function AdminSideBar() {
     >
       <div className="flex h-full flex-col gap-8">
         <div className="flex items-center pb-5 justify-between">
-          <button className={`text-xl py-2 ${toggleSideBar ? "block" : "hidden"}`}>
+          <button
+            className={`text-xl py-2 ${toggleSideBar ? "block" : "hidden"}`}
+          >
             <img src={RMTOYSLOGO} className="w-[90px]" alt="" />
           </button>
           <button onClick={() => setToggleSideBar(!toggleSideBar)}>
@@ -100,6 +141,21 @@ export default function AdminSideBar() {
                   >
                     {item.name}
                   </p>
+
+                  {toggleSideBar && (
+                    <div className="absolute flex flex-col gap-2 border z-50 transition-all w-[200px] left-[200px] invisible group-hover:visible text-center opacity-0 group-hover:opacity-100 translate-x-0 group-hover:translate-x-2  bg-card rounded-[5px] border-black p-3 top-1 uppercase">
+                      {item.inner &&
+                        item.inner.map((inner, index) => (
+                          <Link
+                            to={inner.path}
+                            key={index}
+                            className="hover:bg-black hover:text-card border p-1 rounded-[5px] border-black"
+                          >
+                            {inner.name}
+                          </Link>
+                        ))}
+                    </div>
+                  )}
                 </Link>
 
                 {!toggleSideBar && (
@@ -113,7 +169,6 @@ export default function AdminSideBar() {
             ))}
           </ul>
         </nav>
-
 
         <div className="border-t-gray-300 border flex items-center gap-5  pt-3">
           <img

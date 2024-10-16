@@ -9,6 +9,8 @@ import authRoutes from "../api/routes/auth.route.js";
 import productRoutes from "../api/routes/product.route.js";
 import userRoutes from '../api/routes/user.route.js'
 import filterRoutes from '../api/routes/filter.route.js'
+import supplierRoutes from '../api/routes/supplier.route.js'
+import categoryRoutes from '../api/routes/category.route.js'
 //
 import cors from "cors";
 
@@ -32,6 +34,8 @@ app.use(`/api/auth`, authRoutes);
 app.use(`/api/product`, productRoutes);
 app.use(`/api/user`, userRoutes)
 app.use(`/api/filter`, filterRoutes)
+app.use(`/api/supplier`, supplierRoutes)
+app.use(`/api/category`, categoryRoutes)
 
 app.use(handleError);
 

@@ -1,7 +1,7 @@
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 
-export default function AdminCategoriesTable({ tableName, valueName }) {
+export default function AdminFilterTable({ tableName, valueName }) {
   return (
     <div className="font-main border flex-1 rounded-[5px] border-black bg-card relative ">
       <div className=" border flex-col border-b-black rounded-t-[5px] flex md:flex-row items-center justify-between  p-4">
