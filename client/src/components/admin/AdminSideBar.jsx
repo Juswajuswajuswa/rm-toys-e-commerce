@@ -26,7 +26,7 @@ const adminSideBarItems = [
     icon: <TbLayoutDashboardFilled size={20} />,
     inner: [
       {
-        name: "Products",
+        name: "Products Table",
         path: "/admin/products",
       },
       {
@@ -50,7 +50,7 @@ const adminSideBarItems = [
     icon: <MdCategory size={20} />,
     inner: [
       {
-        name: "Category",
+        name: "Category Table",
         path: "/admin/category"
       },
       {
@@ -64,7 +64,7 @@ const adminSideBarItems = [
     icon: <MdCategory size={20} />,
     inner: [
       {
-        name: "Supplier",
+        name: "Supplier Table",
         path: "/admin/supplier"
       },
       {
@@ -74,8 +74,18 @@ const adminSideBarItems = [
     ]
   },
   {
+    name: "User Maintenance",
+    // path: "/admin/filter",
+    icon: <MdCategory size={20} />,
+  },
+  {
     name: "Manage Filter",
     path: "/admin/filter",
+    icon: <MdCategory size={20} />,
+  },
+  {
+    name: "Stocks",
+    // path: "/admin/filter",
     icon: <MdCategory size={20} />,
   },
 

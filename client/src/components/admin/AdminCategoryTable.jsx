@@ -1,14 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CiEdit } from "react-icons/ci";
 import { IoSearch } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 import axiosInstance from "../../lib/axios";
+import toast from "react-hot-toast";
 
 export default function AdminCategoryTable() {
+
+
+ 
+	const queryClient = useQueryClient()
+
   const {
     data: categories = [],
-    isPending,
-    isError,
+    isPending: isCategoryPending,
+    isError: isCategoryError,
   } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
@@ -17,7 +23,28 @@ export default function AdminCategoryTable() {
     },
   });
 
-  console.log(categories);
+
+  const {mutate: deleteCategoryMutation, isPending: isDeletedPending, isError: isDeletedError} = useMutation({
+    mutationFn: async (categoryId) => {
+      const res = await axiosInstance.delete(`/category/delete-category/${categoryId}`)
+      return res.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ["categories"]})
+      toast.success("Category Deleted Successfully!")
+    }
+  })
+
+
+
+  if (isCategoryPending || isDeletedPending) {
+    <p>loading...</p>
+  }
+
+  if (isCategoryError || isDeletedError) {
+    <p>loading...</p>
+  }
+
 
   return (
     <div className="font-main border rounded-[5px] border-black bg-card relative ">
@@ -41,6 +68,7 @@ export default function AdminCategoryTable() {
               <th className="font-normal p-2 pb-5">ID</th>
               <th className="font-normal p-2 pb-5">Category Name</th>
               <th className="font-normal p-2 pb-5">Category Description</th>
+              <th className="font-normal p-2 pb-5">Products Count</th>
               <th className="font-normal p-2 pb-5">ACTIONS</th>
             </tr>
           </thead>
@@ -57,12 +85,16 @@ export default function AdminCategoryTable() {
                   <td className="">
                     {category.categoryDescription}
                   </td>
+                  <td className="">
+                    200
+                  </td>
 
                   <td className="px-4 py-4 whitespace-nowrap gap-3 text-sm flex justify-center">
                     <button className="text-green-600 hover:text-indigo-300 mr-2">
                       <CiEdit size={25} />
                     </button>
-                    <button className="text-red-600 hover:text-red-300">
+                    <button onClick={() => deleteCategoryMutation(category._id)}
+                    className="text-red-600 hover:text-red-300">
                       <MdDelete size={25} />
                     </button>
                   </td>
