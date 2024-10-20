@@ -1,31 +1,72 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import AdminHeader from "../../reusable/Admin/AdminHeader";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../lib/axios";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-export default function AdminAddSupplier() {
+export default function AdminEditSupplier() {
+  const queryClient = useQueryClient();
+  const params = useParams();
+  const navigate = useNavigate();
 
-  const queryClient = useQueryClient()
+  const [currentSupplier, setCurrentSupplier] = useState({});
 
   const {
-    mutate: addSupplierMutation,
-    isPending: isSupplierPending,
-    isError: isSupplierError,
+    data: singleSupplier,
+    isPending: isSinglePending,
+    isError: isSingleError,
+  } = useQuery({
+    queryKey: ["supplier", params.editSupplierId],
+    queryFn: async () => {
+      const { editSupplierId } = params;
+      const res = await axiosInstance.get(
+        `/supplier/get-supplier/${editSupplierId}`
+      );
+      if (!res.data) return console.log("no data found!");
+      return res.data;
+    },
+    enabled: !!params.editSupplierId,
+  });
+
+  useEffect(() => {
+    if (singleSupplier) {
+      setCurrentSupplier(singleSupplier);
+    }
+  }, [singleSupplier]);
+
+
+  const {
+    mutate: editSupplierMutation,
+    isPending: isEditPending,
+    isError: isEditError,
   } = useMutation({
     mutationFn: async (data) => {
-      const res = await axiosInstance.post(`/supplier/add-supplier`, data);
+      const { editSupplierId } = params;
+      const res = await axiosInstance.put(
+        `/supplier/edit-supplier/${editSupplierId}`,
+        data
+      );
       return res.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['supplier']})
-      toast.success("Added Successfully!");
+      queryClient.invalidateQueries({ queryKey: ["supplier"] });
+      toast.success("Successfully Edited!");
+      navigate(`/admin/supplier`);
     },
     onError: (err) => {
       toast.error(err.response.data.message || "Something went wrong");
     },
   });
 
-  const handleSupplierSubmit = (e) => {
+  const handleChange = (e) => {
+    setCurrentSupplier({
+      ...currentSupplier,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleEditSupplierSubmit = (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.target);
@@ -40,33 +81,34 @@ export default function AdminAddSupplier() {
     } = inputs;
 
     try {
-      addSupplierMutation({
+      editSupplierMutation({
         supplierName,
         contactPerson,
         contactNumber,
         supplierPay,
         supplierAddress,
       });
-      e.target.reset();
+      e.target.reset()
     } catch (error) {
       console.log(error);
     }
   };
 
-  if (isSupplierPending) {
+  if (isSinglePending || isEditPending) {
     <p>loading...</p>;
   }
-  if (isSupplierError) {
+
+  if (isSingleError || isEditError) {
     <p>loading...</p>;
   }
 
   return (
     <section className="bg-yellow h-screen font-main">
-      <AdminHeader title={"ADD NEW SUPPLIER"} />
+      <AdminHeader title={"EDIT SUPPLIER"} />
 
       <div className="max-w-[90%]  pt-14 pb-5 mx-auto flex gap-5 flex-col">
         <form
-          onSubmit={handleSupplierSubmit}
+          onSubmit={handleEditSupplierSubmit}
           className="border flex flex-col gap-5 relative rounded-[5px] border-black bg-card"
         >
           <div className="absolute bg-card -top-7 right-0 w-[80px] border border-black h-[20px] rounded-full"></div>
@@ -79,6 +121,8 @@ export default function AdminAddSupplier() {
                 type="text"
                 name="supplierName"
                 id="supplierName"
+                value={currentSupplier.supplierName}
+                onChange={handleChange}
                 className="border border-black w-full rounded-[5px] p-1 h-[50p] outline-none"
               />
             </div>
@@ -90,6 +134,8 @@ export default function AdminAddSupplier() {
                 type="text"
                 name="contactPerson"
                 id="contactPerson"
+                value={currentSupplier.contactPerson}
+                onChange={handleChange}
                 className="border border-black w-full rounded-[5px] p-1 h-[50p] outline-none"
               />
             </div>
@@ -103,6 +149,8 @@ export default function AdminAddSupplier() {
                 min={0}
                 name="contactNumber"
                 id="contactNumber"
+                value={currentSupplier.contactNumber}
+                onChange={handleChange}
                 className="border border-black w-full rounded-[5px] p-1 h-[50p] outline-none"
               />
             </div>
@@ -114,6 +162,8 @@ export default function AdminAddSupplier() {
                 type="text"
                 name="supplierPay"
                 id="supplierPay"
+                value={currentSupplier.supplierPay}
+                onChange={handleChange}
                 className="border border-black w-full rounded-[5px] p-1 h-[50p] outline-none"
               />
             </div>
@@ -125,6 +175,8 @@ export default function AdminAddSupplier() {
                 type="text"
                 name="supplierAddress"
                 id="supplierAddress"
+                value={currentSupplier.supplierAddress}
+                onChange={handleChange}
                 className="border border-black w-full rounded-[5px] p-1 h-[50p] outline-none"
               />
             </div>
@@ -132,7 +184,7 @@ export default function AdminAddSupplier() {
 
           <div className="flex flex-col">
             <button className="border bg-primary text-card rounded-b-[5px] p-2">
-              ADD SUPPLIER
+              UPDATE SUPPLIER
             </button>
           </div>
         </form>

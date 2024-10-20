@@ -7,15 +7,16 @@ const SupplierModelSchema = new mongoose.Schema({
     unique: true,
   },
   contactPerson: {
-    type  : String,
+    type: String,
     required: [true, "Contact person is required"],
   },
   contactNumber: {
     type: String,
     required: true,
   },
-  bankMethod: {
+  supplierPay: {
     type: String,
+    required: true,
   },
   supplierAddress: {
     type: String,

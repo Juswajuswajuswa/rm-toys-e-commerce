@@ -18,15 +18,14 @@ export default function AdminAddProducts() {
   const [value, setValue] = useState("");
 
 
-  const [stocks, setStocks] = useState(0)
-  const [discount, setDiscount] = useState(0)
-  const [productName, setProductName] = useState("")
-  const [productDescription, setProductDescription] = useState("")
+  const [discount, setDiscount] = useState(0);
+  const [productName, setProductName] = useState("");
+  const [productDescription, setProductDescription] = useState("");
   const [productsDetailsArray, setProductsDetailsArray] = useState([]);
-  const [filters, setFilters] = useState({})
-  const [price, setPrice] = useState(0)
-
-  console.log(filters)
+  const [filters, setFilters] = useState({});
+  const [price, setPrice] = useState(0);
+  const [category, setCategory] = useState("")
+  const [supplier, setSupplier] = useState("")
 
 
   const [isEditing, setIsEditing] = useState(false);
@@ -40,18 +39,41 @@ export default function AdminAddProducts() {
     },
   });
 
+
+  const {data: categories = [], isPending: isCategoryPending, isError: isCategoryError} = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/category/get-categories`)
+      return res.data 
+    }
+
+  })
+
+  const {
+    data: suppliers = [],
+    isPending: isSuppliersPending,
+    isError: isSuppliersError,
+  } = useQuery({
+    queryKey: ["suppliers"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/supplier/get-suppliers`);
+      return res.data;
+    },
+  });
+
+  console.log(suppliers)
+
   const { mutate: addProductMutation } = useMutation({
     mutationFn: async (data) => {
-      const res = await axiosInstance.post (`/product/add-product`, data);
+      const res = await axiosInstance.post(`/product/add-product`, data);
       return res.data;
     },
     onSuccess: () => {
-      setProductDescription("")
-      setProductName("")
-      setProductsDetailsArray([])
-      setImages([])
-      setDiscount(0)
-      setStocks(0)
+      setProductDescription("");
+      setProductName("");
+      setProductsDetailsArray([]);
+      setImages([]);
+      setDiscount(0);
       toast.success("Product Submitted");
     },
     onError: (err) => {
@@ -62,20 +84,17 @@ export default function AdminAddProducts() {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    try {
-      addProductMutation({
-        productName,
-        price,
-        productDescription,
-        productDetails: productsDetailsArray,
-        stocks,
-        discount,
-        productImages: images,
-        filters
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    addProductMutation({
+      productName,
+      price,
+      productDescription,
+      productDetails: productsDetailsArray,
+      discount,
+      productImages: images,
+      filters,
+      category: category,
+      supplier: supplier
+    });
   };
 
   const handleSubmitLabelValueObject = () => {
@@ -129,11 +148,11 @@ export default function AdminAddProducts() {
     setProductsDetailsArray((prev) => prev.filter((_, i) => i !== index));
   };
 
-  if (isPending) {
+  if (isPending || isCategoryPending || isSuppliersPending) {
     return <p>awdwad</p>;
   }
 
-  if (isError) {
+  if (isError || isCategoryError || isSuppliersError) {
     return <p>awdwad</p>;
   }
 
@@ -168,7 +187,6 @@ export default function AdminAddProducts() {
                   id="productDescription"
                   onChange={(e) => setProductDescription(e.target.value)}
                   value={productDescription}
-          
                 ></textarea>
               </div>
 
@@ -246,7 +264,7 @@ export default function AdminAddProducts() {
 
             <div className="border flex flex-col gap-2 border-black rounded-[5px] uppercase bg-card p-4">
               <div className="flex flex-col md:flex-row gap-2">
-                <div className="flex flex-col flex-1">
+                {/* <div className="flex flex-col flex-1">
                   <label htmlFor="stocks" className="pb-2">
                     Stocks
                   </label>
@@ -258,7 +276,7 @@ export default function AdminAddProducts() {
                     value={stocks}
                     onChange={(e) => setStocks(e.target.value)}
                   />
-                </div>
+                </div> */}
                 <div className="flex flex-col flex-1">
                   <label htmlFor="price" className="pb-2">
                     price
@@ -307,6 +325,46 @@ export default function AdminAddProducts() {
               </div>
 
               <div className="flex flex-col border-t-gray-400 border border-r-0 border-l-0 border-b-0 pt-4 my-2 gap-2">
+               
+
+                <div className="flex flex-col">
+                  <h1 className="py-2">Categories</h1>
+                  <select
+                  name="category"
+                   id="category"
+                   value={category}
+                   onChange={(e) => setCategory(e.target.value)}
+                  className="-2 rounded-[5px] py-2 border border-black outline-none">
+                    <option value="">Select Category</option>
+                    {
+                      categories.length > 0 && categories.map((category) => (
+                        <option key={category._id} value={category._id} >{category.categoryName}</option>
+                      ))
+                    }
+                  </select>
+                </div>
+
+                <div className="flex flex-col">
+                  <h1 className="py-2">Suppliers</h1>
+                  <select 
+                   name="supplier"
+                   id="supplier"
+                   value={supplier}
+                   onChange={(e) => setSupplier(e.target.value)}
+                  className="-2 rounded-[5px] py-2 border border-black outline-none">
+                    <option value="">Select Supplier</option>
+                    {
+                      suppliers.length > 0 && suppliers.map(supplier => (
+                        <option key={supplier._id} value={supplier._id}>{supplier.supplierName}</option>
+                      ))
+                    }
+                  </select>
+                </div>
+
+              </div>
+               
+
+              <div className="flex flex-col border-t-gray-400 border border-r-0 border-l-0 border-b-0 pt-4 my-2 gap-2">
                 <h1 className="py-2">FILTERS</h1>
 
                 <div className="flex gap-2 flex-wrap">
@@ -320,13 +378,16 @@ export default function AdminAddProducts() {
                           className="p-2 rounded-[5px] border border-black outline-none"
                           name={item.filterName}
                           id={item.filterName}
-                          onChange={(e) => 
+                          onChange={(e) =>
                             setFilters((prevFilters) => ({
                               ...prevFilters, // Keep existing filters intact
                               [item.filterName]: e.target.value, // Update the current filter value
                             }))
                           }
                         >
+                           <option value={value}>
+                                select {item.filterName}
+                              </option>
                           {Array.isArray(item.filterValue) &&
                             item.filterValue.map((value, index) => (
                               <option key={`${item.id}-${index}`} value={value}>
@@ -348,12 +409,10 @@ export default function AdminAddProducts() {
                 <Buttons buttonName={"draft"} icon={<IoArchive />} />
               </div>
 
-     
-              <button className="flex-1 flex justify-between items-center rounded-[5px] px-4 border border-black bg-primary text-card">ADD THIS PRODUCT
-
-                <FaCheckCircle/>
+              <button className="flex-1 flex justify-between items-center rounded-[5px] px-4 border border-black bg-primary text-card">
+                ADD THIS PRODUCT
+                <FaCheckCircle />
               </button>
-
             </div>
           </div>
 

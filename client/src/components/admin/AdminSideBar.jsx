@@ -33,14 +33,14 @@ const adminSideBarItems = [
         name: "Add Product",
         path: "/admin/addProducts",
       },
-      {
-        name: "Products Draft",
-        path: "/admin/addProducts",
-      },
-      {
-        name: "Products Reviews",
-        path: "/admin/addProducts",
-      },
+      // {
+      //   name: "Products Draft",
+      //   path: "/admin/addProducts",
+      // },
+      // {
+      //   name: "Products Reviews",
+      //   path: "/admin/addProducts",
+      // },
       
      
     ],
@@ -77,6 +77,12 @@ const adminSideBarItems = [
     name: "User Maintenance",
     // path: "/admin/filter",
     icon: <MdCategory size={20} />,
+    inner: [
+      {
+        name: "user table",
+        path: "/admin/user"
+      }
+    ]
   },
   {
     name: "Manage Filter",
@@ -85,6 +91,22 @@ const adminSideBarItems = [
   },
   {
     name: "Stocks",
+    // path: "/admin/stocks",
+    icon: <MdCategory size={20} />,
+    inner: [
+      {
+        name: "Stocks Table",
+        path: "/admin/stocks"
+      },
+      {
+        name: "Add Stocks",
+        path: "/admin/addStocks"
+      },
+    ]
+  },
+
+  {
+    name: "Audit Trail",
     // path: "/admin/filter",
     icon: <MdCategory size={20} />,
   },

@@ -4,12 +4,13 @@ import { IoSearch } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 import axiosInstance from "../../lib/axios";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminCategoryTable() {
-
-
  
 	const queryClient = useQueryClient()
+
+  const navigate = useNavigate()
 
   const {
     data: categories = [],
@@ -34,6 +35,10 @@ export default function AdminCategoryTable() {
       toast.success("Category Deleted Successfully!")
     }
   })
+
+  const navigateToEdit = (categoryId) => {
+    navigate(`/admin/editCategory/${categoryId}`)
+  }
 
 
 
@@ -90,7 +95,8 @@ export default function AdminCategoryTable() {
                   </td>
 
                   <td className="px-4 py-4 whitespace-nowrap gap-3 text-sm flex justify-center">
-                    <button className="text-green-600 hover:text-indigo-300 mr-2">
+                    <button onClick={() => navigateToEdit(category._id)}
+                    className="text-green-600 hover:text-indigo-300 mr-2">
                       <CiEdit size={25} />
                     </button>
                     <button onClick={() => deleteCategoryMutation(category._id)}

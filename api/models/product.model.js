@@ -23,12 +23,6 @@ const ProductModelSchema = new mongoose.Schema({
     required: true,
   },
 
-  stocks: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
-
   discount: {
     type: Number,
     default: 0,
@@ -49,19 +43,15 @@ const ProductModelSchema = new mongoose.Schema({
     required: true,
   },
 
-  category: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-    },
-  ],
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+  },
 
-  supplier: [
-    {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Supplier"
-    }
-  ]
+  supplier: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Supplier",
+  },
 });
 
 const Product = mongoose.model("Product", ProductModelSchema);

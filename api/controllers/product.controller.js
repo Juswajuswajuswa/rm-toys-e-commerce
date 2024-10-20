@@ -1,5 +1,6 @@
 import { handleMakeError } from "../middleware/handleError.js";
 import Product from "../models/product.model.js";
+import Stocks from "../models/stocks.model.js";
 
 export const addProduct = async (req, res, next) => {
   const {
@@ -11,6 +12,8 @@ export const addProduct = async (req, res, next) => {
     discount,
     productImages,
     filters,
+    category,
+    supplier
   } = req.body;
 
   try {
@@ -23,6 +26,8 @@ export const addProduct = async (req, res, next) => {
       discount,
       productImages,
       filters,
+      category,
+      supplier
     });
 
     await newProduct.save();
@@ -34,7 +39,13 @@ export const addProduct = async (req, res, next) => {
 
 export const getProducts = async (req, res, next) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate({
+      path: "supplier",
+      select: "supplierName"
+    }).populate({
+      path: "category",
+      select: "categoryName"
+    })
 
     res.status(200).json(products);
   } catch (error) { 
@@ -50,6 +61,8 @@ export const deleteProduct = async (req, res, next) => {
 
     if (!singleProduct) return next(handleMakeError(400, "Product not found"));
 
+    await Stocks.deleteMany({product: productId})
+    
     await Product.findByIdAndDelete(productId);
 
     res.status(200).json({ message: "Successfully deleted" });
@@ -66,7 +79,6 @@ export const editProduct = async (req, res, next) => {
     price,
     productDescription,
     productDetails,
-    stocks,
     discount,
     productImages,
     filters,
@@ -80,10 +92,11 @@ export const editProduct = async (req, res, next) => {
         price,
         productDescription,
         productDetails,
-        stocks,
         discount,
         productImages,
         filters,
+        category,
+        supplier
       },
       {
         new: true,

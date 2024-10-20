@@ -31,6 +31,12 @@ import AdminAddSupplier from './pages/admin/AdminAddSupplier.jsx'
 import AdminSupplier from './pages/admin/AdminSupplier.jsx'
 import AdminCategory from './pages/admin/AdminCategory.jsx'
 import AdminAddCategory from './pages/admin/AdminAddCategory.jsx'
+import AdminCategoryEdit from './pages/admin/AdminCategoryEdit.jsx'
+import AdminEditSupplier from './pages/admin/AdminEditSupplier.jsx'
+import AdminStocks from './pages/admin/AdminStocks.jsx'
+import AdminAddStocks from './pages/admin/AdminAddStocks.jsx'
+import AdminEditStocks from './components/admin/AdminEditStocks.jsx'
+import AdminUser from './pages/admin/AdminUser.jsx'
   
 const queryClient = new QueryClient()
 
@@ -143,6 +149,10 @@ const router = createBrowserRouter([
         path: "/admin/addSupplier",
         element: <AdminAddSupplier/>
       },
+      {
+        path: "/admin/editSupplier/:editSupplierId",
+        element: <AdminEditSupplier/>
+      },
 
       // CATEGORY
       
@@ -154,6 +164,35 @@ const router = createBrowserRouter([
         path: "/admin/addCategory",
         element: <AdminAddCategory/>
       },
+      {
+        path: "/admin/editCategory/:editCategoryId",
+        element: <AdminCategoryEdit/>
+      },
+
+
+      // STOCKS
+
+      {
+        path: "/admin/stocks",
+        element: <AdminStocks/>
+      },
+
+      {
+        path: "/admin/addStocks",
+        element: <AdminAddStocks/>
+      },
+      {
+        path: "/admin/editStocks/:stockId",
+        element: <AdminEditStocks/>
+      },
+
+
+      // USER MAINTENANCE 
+
+      {
+        path: "/admin/user",
+        element: <AdminUser/>
+      }
     ]
   },
 ])

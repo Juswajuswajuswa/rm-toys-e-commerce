@@ -1,3 +1,4 @@
+import { handleMakeError } from "../middleware/handleError.js";
 import User from "../models/user.models.js";
 import bcypt from "bcryptjs";
 
@@ -33,7 +34,7 @@ export const updateProfile = async (req, res, next) => {
   }
 };
 
-export const getAll = async (req, res) => {
+export const getAll = async (req, res, next) => {
   try {
     const users = await User.find();
     res.status(201).json(users);
@@ -41,3 +42,23 @@ export const getAll = async (req, res) => {
     next(error);
   }
 };
+
+export const getAllCustomer = async (req, res, next) => {
+  try {
+    const findAllCustomer = await User.find({role: "customer"})
+    if (!findAllCustomer) return next(handleMakeError(400, "Not found!"))
+    res.status(200).json(findAllCustomer)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getAllWorkers = async (req, res, next) => {
+  try {
+    const dontFindCustomer = await User.find({role: {$ne: "customer"}})
+    if (!dontFindCustomer) return next(handleMakeError(400, "Not found!"))
+    res.status(200).json(dontFindCustomer)
+  } catch (error) {
+    next(error)
+  }
+}
